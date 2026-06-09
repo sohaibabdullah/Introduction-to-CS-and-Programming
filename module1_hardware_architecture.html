@@ -1,0 +1,1049 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Module 1 — Hardware Architecture | Intro to CS & Programming</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:ital,wght@0,300;0,400;0,600;0,700;1,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f7f6f2;
+    --surface: #ffffff;
+    --surface2: #f0ede6;
+    --border: #ddd8ce;
+    --accent: #0a7c5c;
+    --accent2: #c44a14;
+    --accent3: #3b49c9;
+    --text: #1a1a1a;
+    --text-muted: #374151;
+    --text-dim: #6b7280;
+    --heading-font: 'Space Mono', monospace;
+    --body-font: 'DM Sans', sans-serif;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--body-font);
+    font-size: 15px;
+    line-height: 1.7;
+    min-height: 100vh;
+  }
+
+  /* ── Page Header ── */
+  .page-header {
+    background: linear-gradient(135deg, #1a3a8f 0%, #1a6dbf 60%, #1e7a6e 100%);
+    border-bottom: 1px solid #b8cce8;
+    padding: 48px 60px 36px;
+    position: relative;
+    overflow: hidden;
+  }
+  .page-header::before {
+    content: '';
+    position: absolute;
+    top: -80px; right: -80px;
+    width: 340px; height: 340px;
+    background: radial-gradient(circle, rgba(255,255,255,0.12) 0%, transparent 70%);
+    border-radius: 50%;
+  }
+  .page-header::after {
+    content: '';
+    position: absolute;
+    bottom: -60px; left: 40%;
+    width: 260px; height: 260px;
+    background: radial-gradient(circle, rgba(255,255,255,0.08) 0%, transparent 70%);
+    border-radius: 50%;
+  }
+  .course-badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: rgba(255,255,255,0.18);
+    border: 1px solid rgba(255,255,255,0.45);
+    color: #fff;
+    font-family: var(--heading-font);
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 5px 12px;
+    border-radius: 3px;
+    margin-bottom: 18px;
+  }
+  .course-badge span { opacity: 0.6; }
+  h1.lecture-title {
+    font-family: var(--heading-font);
+    font-size: clamp(22px, 3vw, 36px);
+    font-weight: 700;
+    color: #fff;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    margin-bottom: 10px;
+  }
+  h1.lecture-title em {
+    font-style: normal;
+    color: #b3f0e0;
+  }
+  .header-sub {
+    color: rgba(255,255,255,0.75);
+    font-size: 14px;
+    font-weight: 300;
+    display: flex; gap: 24px; flex-wrap: wrap;
+    margin-top: 14px;
+  }
+  .header-sub span {
+    display: flex; align-items: center; gap: 6px;
+  }
+  .header-sub span::before {
+    content: '▸';
+    color: #b3f0e0;
+    font-size: 10px;
+  }
+
+  /* ── Layout ── */
+  .container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 48px 60px 80px;
+  }
+
+  /* ── Section blocks ── */
+  .section {
+    margin-bottom: 52px;
+  }
+  .section-label {
+    font-family: var(--heading-font);
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 8px;
+  }
+  h2.section-title {
+    font-family: var(--heading-font);
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--text);
+    letter-spacing: -0.01em;
+    padding-bottom: 12px;
+    border-bottom: 2px solid var(--border);
+    margin-bottom: 24px;
+  }
+  h2.section-title .num {
+    color: var(--accent2);
+    margin-right: 10px;
+  }
+
+  /* ── Architecture Diagram Box ── */
+  .arch-diagram {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 32px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 32px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+  }
+  .arch-diagram img {
+    max-width: 480px;
+    width: 100%;
+    border-radius: 4px;
+    filter: brightness(1.05) contrast(1.05);
+  }
+
+  /* ── Component Grid ── */
+  .component-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 16px;
+    margin-bottom: 8px;
+  }
+  .component-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 20px 22px;
+    transition: border-color 0.2s, transform 0.2s;
+    position: relative;
+    overflow: hidden;
+  }
+  .component-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 3px;
+    height: 100%;
+    background: var(--card-accent, var(--accent));
+    border-radius: 8px 0 0 8px;
+  }
+  .component-card:hover {
+    border-color: rgba(10,124,92,0.35);
+    transform: translateY(-2px);
+  }
+  .card-icon {
+    font-size: 22px;
+    margin-bottom: 8px;
+    display: block;
+  }
+  .card-title {
+    font-family: var(--heading-font);
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--card-accent, var(--accent));
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .card-desc {
+    font-size: 13.5px;
+    color: var(--text-muted);
+    line-height: 1.6;
+  }
+
+  /* ── Motherboard section ── */
+  .mb-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 28px;
+    align-items: start;
+  }
+  @media (max-width: 700px) {
+    .mb-layout { grid-template-columns: 1fr; }
+    .container { padding: 32px 24px 60px; }
+    .page-header { padding: 32px 24px 24px; }
+  }
+  .mb-image-box {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px;
+    position: sticky;
+    top: 20px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+  }
+  .mb-image-box img {
+    width: 100%;
+    border-radius: 5px;
+    display: block;
+  }
+  .mb-image-caption {
+    text-align: center;
+    font-size: 11px;
+    font-family: var(--heading-font);
+    color: var(--text-dim);
+    margin-top: 10px;
+    letter-spacing: 0.05em;
+  }
+  .mb-components {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .mb-item {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 14px 16px;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 12px;
+    align-items: start;
+    transition: border-color 0.2s;
+  }
+  .mb-item:hover { border-color: rgba(124,140,248,0.4); }
+  .mb-num {
+    background: var(--accent3);
+    color: #fff;
+    font-family: var(--heading-font);
+    font-size: 10px;
+    font-weight: 700;
+    width: 24px; height: 24px;
+    border-radius: 4px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+  .mb-name {
+    font-family: var(--heading-font);
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--accent3);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 3px;
+  }
+  .mb-desc {
+    font-size: 13px;
+    color: var(--text-muted);
+    line-height: 1.55;
+  }
+
+  /* ── Info Note ── */
+  .info-note {
+    background: #eef2ff;
+    border: 1px solid #c7d2fe;
+    border-radius: 6px;
+    padding: 14px 18px;
+    font-size: 13.5px;
+    color: var(--text-muted);
+    margin-top: 16px;
+    display: flex; gap: 10px; align-items: flex-start;
+  }
+  .info-note .icon { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+
+  /* ── Sub-component list ── */
+  .sub-list {
+    list-style: none;
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .sub-list li {
+    display: flex; gap: 10px; align-items: flex-start;
+  }
+  .sub-list li::before {
+    content: '◆';
+    color: var(--accent2);
+    font-size: 8px;
+    margin-top: 5px;
+    flex-shrink: 0;
+  }
+  .sub-list strong { color: var(--text); font-weight: 600; }
+
+  /* ── Table ── */
+  .styled-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13.5px;
+    margin-top: 12px;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 1px 6px rgba(0,0,0,0.06);
+  }
+  .styled-table th {
+    background: #1a3a8f;
+    color: #fff;
+    font-family: var(--heading-font);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 10px 14px;
+    text-align: left;
+    border-bottom: none;
+  }
+  .styled-table td {
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--border);
+    color: var(--text-muted);
+    vertical-align: top;
+    background: #fff;
+  }
+  .styled-table tr:last-child td { border-bottom: none; }
+  .styled-table tr:nth-child(even) td { background: #f9f8f5; }
+  .styled-table tr:hover td { background: #eef2ff; }
+  .styled-table td:first-child { color: var(--text); font-weight: 600; }
+
+  /* ── Page footer ── */
+  .page-footer {
+    border-top: 1px solid var(--border);
+    background: var(--surface2);
+    padding: 20px 60px;
+    display: flex; justify-content: space-between; align-items: center;
+    flex-wrap: wrap; gap: 10px;
+    font-size: 12px;
+    color: var(--text-dim);
+    font-family: var(--heading-font);
+    letter-spacing: 0.05em;
+  }
+  .footer-accent { color: var(--accent); }
+
+  /* ── Smartphone Perspective Box ── */
+  .phone-perspective {
+    background: linear-gradient(135deg, #eef2ff 0%, #e6f7f4 100%);
+    border: 1px solid #c7d2fe;
+    border-left: 3px solid var(--accent3);
+    border-radius: 6px;
+    padding: 16px 20px;
+    margin-top: 16px;
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+  }
+  .phone-perspective .ph-icon {
+    font-size: 22px;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+  .phone-perspective .ph-label {
+    font-family: var(--heading-font);
+    font-size: 9px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--accent3);
+    margin-bottom: 5px;
+  }
+  .phone-perspective .ph-text {
+    font-size: 13.5px;
+    color: var(--text-muted);
+    line-height: 1.65;
+  }
+  .phone-perspective .ph-text strong { color: var(--text); font-weight: 600; }
+
+  @media print {
+    body { background: #fff; color: #111; }
+    .page-header { background: #1a3a8f !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .component-card, .mb-item, .arch-diagram, .mb-image-box { border-color: #ccc; background: #f9f9f9; }
+    .styled-table th { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .section { page-break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════ PAGE HEADER ══════════════════════ -->
+<header class="page-header">
+  <div class="course-badge">Introduction to Computer Science &amp; Programming <span>|</span> Module 1</div>
+  <h1 class="lecture-title">Computer Hardware &amp;<br><em>Architecture</em></h1>
+  <div class="header-sub">
+    
+    <span>Hardware Components</span>
+    <span>Motherboard Walkthrough</span>
+    
+  </div>
+</header>
+
+<!-- ══════════════════════ MAIN CONTENT ══════════════════════ -->
+<div class="container">
+<!-- ── 0. What is a Computer ── -->
+  <section class="section">
+    <div class="section-label">Section 00</div>
+    <h2 class="section-title"><span class="num">0.</span>What is a Computer?</h2>
+
+    <p style="color:var(--text-muted); font-size:14px; margin-bottom:24px;">
+      A <strong style="color:var(--text)">computer</strong> is an electronic device that processes data,
+      converting it into information that is meaningful for people.
+    </p>
+
+    <!-- IPO Diagram -->
+    <div style="display:flex; align-items:center; justify-content:center; gap:0; margin:28px 0 32px; flex-wrap:wrap;">
+
+      <div style="text-align:center;">
+        <div style="font-size:11px; font-family:var(--heading-font); letter-spacing:0.12em; text-transform:uppercase; color:var(--text-dim); margin-bottom:8px;">Input</div>
+        <div style="background:#eef2ff; border:1px solid #c7d2fe; border-radius:8px; padding:14px 28px; font-family:var(--heading-font); font-size:13px; color:var(--accent3); font-weight:700;">
+          Data
+        </div>
+      </div>
+
+      <div style="display:flex; align-items:center; padding:0 6px; margin-top:22px;">
+        <div style="width:36px; height:2px; background:var(--border);"></div>
+        <div style="width:0; height:0; border-top:6px solid transparent; border-bottom:6px solid transparent; border-left:8px solid var(--border);"></div>
+      </div>
+
+      <div style="text-align:center;">
+        <div style="font-size:11px; font-family:var(--heading-font); letter-spacing:0.12em; text-transform:uppercase; color:var(--text-dim); margin-bottom:8px;">Processing</div>
+        <div style="background:#1a3a8f; border-radius:8px; padding:14px 28px; font-family:var(--heading-font); font-size:13px; color:#fff; font-weight:700;">
+          CPU
+        </div>
+      </div>
+
+      <div style="display:flex; align-items:center; padding:0 6px; margin-top:22px;">
+        <div style="width:36px; height:2px; background:var(--border);"></div>
+        <div style="width:0; height:0; border-top:6px solid transparent; border-bottom:6px solid transparent; border-left:8px solid var(--border);"></div>
+      </div>
+
+      <div style="text-align:center;">
+        <div style="font-size:11px; font-family:var(--heading-font); letter-spacing:0.12em; text-transform:uppercase; color:var(--text-dim); margin-bottom:8px;">Output</div>
+        <div style="background:#e6f7f4; border:1px solid #a7d7ce; border-radius:8px; padding:14px 28px; font-family:var(--heading-font); font-size:13px; color:var(--accent); font-weight:700;">
+          Information
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Hardware vs Software -->
+    <p style="color:var(--text-muted); font-size:14px; margin-bottom:16px;">
+      Every computer system is made up of two fundamental parts:
+    </p>
+
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px;">
+
+      <div style="background:#fff; border:1px solid var(--border); border-top:3px solid var(--accent3); border-radius:8px; padding:20px 22px; box-shadow:0 1px 6px rgba(0,0,0,0.05);">
+        <div style="font-size:22px; margin-bottom:8px;">🔩</div>
+        <div style="font-family:var(--heading-font); font-size:11px; font-weight:700; color:var(--accent3); letter-spacing:0.06em; text-transform:uppercase; margin-bottom:8px;">Hardware</div>
+        <div style="font-size:13.5px; color:var(--text-muted); line-height:1.65;">
+          The physical, tangible components of a computer — the parts you can
+          see and touch. Examples: CPU, RAM, keyboard, monitor, hard disk.
+        </div>
+      </div>
+
+      <div style="background:#fff; border:1px solid var(--border); border-top:3px solid var(--accent2); border-radius:8px; padding:20px 22px; box-shadow:0 1px 6px rgba(0,0,0,0.05);">
+        <div style="font-size:22px; margin-bottom:8px;">💿</div>
+        <div style="font-family:var(--heading-font); font-size:11px; font-weight:700; color:var(--accent2); letter-spacing:0.06em; text-transform:uppercase; margin-bottom:8px;">Software</div>
+        <div style="font-size:13.5px; color:var(--text-muted); line-height:1.65;">
+          The programs and instructions that tell the hardware what to do.
+          Examples: Windows, Python, a web browser, a game.
+        </div>
+      </div>
+
+    </div>
+
+    <div class="info-note" style="margin-top:16px;">
+      <span class="icon">💡</span>
+      <span><strong style="color:var(--text)">In this module</strong> we focus entirely on <strong style="color:var(--text)">hardware</strong> — the physical building blocks of a computer system.</span>
+    </div>
+
+  </section>
+  <!-- ── 1. Overview ── -->
+  <section class="section">
+    <div class="section-label">Section 01</div>
+    <h2 class="section-title"><span class="num">1.</span>Hardware Architecture — Overview</h2>
+
+    <div class="arch-diagram">
+      <img src="hardware_architechture.png" alt="Hardware Architecture Diagram showing CPU, Main Memory, Secondary Memory, I/O Devices, and Network">
+    </div>
+
+    <p style="color:var(--text-muted); font-size:14px; margin-bottom:20px;">
+      Every computer — desktop, laptop, or smartphone — is built from the same fundamental building blocks. Hardware components fall into <strong style="color:var(--text)">four categories</strong>: Processor, Memory, Input/Output Devices, and Storage.
+    </p>
+
+    <div class="info-note">
+      <span class="icon">💡</span>
+      <span>The diagram above shows how these components connect: the CPU sits at the centre, communicating with Main Memory directly, and with I/O devices and the Network. Secondary memory (storage) connects through main memory.</span>
+    </div>
+  </section>
+
+  <!-- ── 2. Four Hardware Categories ── -->
+  <section class="section">
+    <div class="section-label">Section 02</div>
+    <h2 class="section-title"><span class="num">2.</span>The Four Hardware Components</h2>
+
+    <div class="component-grid">
+
+      <div class="component-card" style="--card-accent:#00d4aa">
+        <span class="card-icon">🧠</span>
+        <div class="card-title">Processor (CPU)</div>
+        <div class="card-desc">The brain of the computer. It fetches, decodes, and executes instructions from software and the user. Modern CPUs contain multiple <em>cores</em> allowing simultaneous task execution.</div>
+      </div>
+
+      <div class="component-card" style="--card-accent:#7c8cf8">
+        <span class="card-icon">💾</span>
+        <div class="card-title">Memory (RAM &amp; ROM)</div>
+        <div class="card-desc">Fast, temporary workspace for the CPU. RAM holds programs and data currently in use; ROM stores permanent boot instructions. More RAM means a faster, more capable system.</div>
+      </div>
+
+      <div class="component-card" style="--card-accent:#ff6b35">
+        <span class="card-icon">⌨️</span>
+        <div class="card-title">Input &amp; Output Devices</div>
+        <div class="card-desc">Devices that let users interact with the computer. <em>Input:</em> keyboard, mouse, scanner, microphone <em>Output:</em> monitor, printer, speakers. Some devices (touchscreen) do both.</div>
+      </div>
+
+      <div class="component-card" style="--card-accent:#f0b429">
+        <span class="card-icon">🗄️</span>
+        <div class="card-title">Storage (Secondary Memory)</div>
+        <div class="card-desc">Persistent storage that retains data when powered off. Much slower than RAM but far larger capacity. Examples: HDD, SSD, USB flash drives.</div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ── 3. CPU Deep Dive ── -->
+  <section class="section">
+    <div class="section-label">Section 03</div>
+    <h2 class="section-title"><span class="num">3.</span>The Processor (CPU) in Detail</h2>
+
+    <p style="color:var(--text-muted); font-size:14px; margin-bottom:20px;">
+      A CPU is a microchip etched with millions of tiny circuits on silicon. It contains three essential sub-components:
+    </p>
+
+    <div class="component-grid">
+
+      <div class="component-card" style="--card-accent:#00d4aa">
+        <span class="card-icon">🎛️</span>
+        <div class="card-title">Control Unit (CU)</div>
+        <div class="card-desc">It acts as a traffic manager — directs the flow of data between the CPU, memory, and other components. It does not process data itself; it coordinates everything.</div>
+      </div>
+
+      <div class="component-card" style="--card-accent:#7c8cf8">
+        <span class="card-icon">➕</span>
+        <div class="card-title">Arithmetic Logic Unit (ALU)</div>
+        <div class="card-desc">It does the actual computation — addition, subtraction, multiplication, division, and logical comparisons (equal to, greater than, less than, not equal to, etc.). All computer data is numbers; the ALU crunches them.</div>
+      </div>
+
+      <div class="component-card" style="--card-accent:#ff6b35">
+        <span class="card-icon">📋</span>
+        <div class="card-title">Registers</div>
+        <div class="card-desc">Ultra-fast, tiny memory cells <em>inside</em> the CPU that store the data being processed right now. Think of them as a scratchpad — data is loaded here before an arithmetic or logical operation.</div>
+      </div>
+
+    </div>
+
+    <div class="phone-perspective">
+      <span class="ph-icon">📱</span>
+      <div>
+        <div class="ph-label">Smartphone Perspective — The Processor</div>
+        <div class="ph-text">Your smartphone has a CPU too — it is called a <strong>SoC (System on a Chip)</strong>. Everything — CPU, GPU, RAM controller — is packed onto one tiny chip. When you open a heavy game and your phone gets warm, that is your SoC working hard and generating heat, just like a desktop CPU. Higher-end phones (e.g. those with Snapdragon 8 Gen series or Apple A-series chips) feel better and perform faster because their SoCs have more cores running at higher speeds.</div>
+      </div>
+    </div>
+
+    <br>
+
+    <table class="styled-table">
+      <thead>
+        <tr>
+          <th>CPU Feature</th>
+          <th>What It Means</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Clock Speed (GHz)</td>
+          <td>Every CPU has a clock driven by a quartz crystal, which can vibrate millions of times per second. The computer uses the vibrations to time its processing operations. In theory, the CPU can execute a function on every tick of the system clock (a clock cycle). 
+
+However, in practice, the CPU is sometimes idle due to a delay between the request to retrieve data from memory and its delivery. A delay caused by waiting for another component to deliver data is called <strong>latency</strong>. 
+
+The clock speed is measured in GHz. GHz is the number of operations a CPU can perform per second (in billions). 1.94 GHz = 1.94 billion operations per second. 
+</td>
+        </tr>
+        <tr>
+          <td>Multiple Cores</td>
+          <td>Modern CPUs have multiple cores, so they can complete multiple tasks simultaneously. A core consists of a separate set of essential processor components (control unit, ALU, and registers). Most Intel Core i7 (11th generation) processors typically have eight cores, for example. All the CPU’s cores are located on the same chip.</td>
+        </tr>
+        <tr>
+          <td>Hyper-Threading (SMT)</td>
+          <td>CPUs now also support hyper-threading which im
+plements the concept Simultaneous Multithreading (SMT) Where
+a single core will present itself as multiple logical cores to a computer’s
+operating system</td>
+        </tr>
+        <tr>
+          <td>CPU Cache (L1/L2/L3)</td>
+          <td><p>To help minimize latency, CPUs have caches. A cache is a small amount of very fast memory located near (or within) the CPU. Data that the CPU has recently used or is predicted to need soon is placed in the cache for temporary storage. That way, if the CPU requests the data, it’s more readily available and incurs less delay.</p>
+
+ <p>Since the late 1980s, most PC CPUs have had cache memory built into them. This CPU-resident cache is often called the level-1 cache, or L1 cache. </p>
+
+ <p> To add even more speed an additional cache is added to CPUs known as Level-2 cache, or L2 cache. This cache used to be found on the motherboard but modern CPUs place L2 cache on the CPU to greatly increase CPU response. L2 cache is slower than L1 cache, but bigger in size. </p>
+
+ <p> An additional motherboard-resident cache is called Level-3 cache or L3 cache. L3 cache is the largest cache memory unit, and also the slowest one. </p>
+
+ <p> L1, L2, and L3 all speed up the CPU, although in different ways. L1 cache holds instructions that the CPU core is currently using or will need immediately. L2 acts as a secondary, larger buffer to store data that couldn’t fit in the L1 cache but is still likely to be needed soon. L3 serves as a “last resort” cache before hitting main memory (RAM). It is designed to hold larger datasets and shared data, minimizing the need to access the slow RAM. In all cases, the cache memory is faster for the CPU to access, resulting in quicker program execution. </p>
+</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ── 4. Memory ── -->
+  <section class="section">
+    <div class="section-label">Section 04</div>
+    <h2 class="section-title"><span class="num">4.</span>Memory</h2>
+
+    <div class="component-grid">
+
+      <div class="component-card" style="--card-accent:#00d4aa">
+        <span class="card-icon">⚡</span>
+        <div class="card-title">RAM — Random Access Memory</div>
+        <div class="card-desc">RAM is a temporary, fast working memory that holds programs and data that the CPU is actively using currently. RAM is <strong style="color:var(--text)">Volatile</strong>, which means everything is lost when it is powered off. More RAM means better multitasking.</div>
+      </div>
+
+      <div class="component-card" style="--card-accent:#ff6b35">
+        <span class="card-icon">🔒</span>
+        <div class="card-title">ROM — Read-Only Memory</div>
+        <div class="card-desc">ROM is a permanent memory that stores the computer's startup (boot) instructions. <strong style="color:var(--text)">Non-volatile</strong> — data survives power loss. Users cannot (normally) write to it.<p> ROM stores the <strong style="color:var(--text)">BIOS (Basic Input/Output System)</strong> — the permanent firmware that runs the instant you press the power button, before any operating system loads. It checks that all hardware is present and working (this is called POST — Power-On Self-Test) and then hands control over to the OS. Unlike RAM, the data here is not erased when power is lost.</p></div>
+      </div>
+
+    </div>
+
+    <div class="info-note" style="margin-top:16px;">
+      <span class="icon">📌</span>
+      <span><strong style="color:var(--text)">Analogy:</strong> Think of RAM as your desk (fast, limited working space) and storage as your filing cabinet (slow, large, permanent). The CPU can only directly work with what's on the desk (in RAM).</span>
+    </div>
+
+    <div class="phone-perspective" style="margin-top:14px;">
+      <span class="ph-icon">📱</span>
+      <div>
+        <div class="ph-label">Smartphone Perspective — RAM</div>
+        <div class="ph-text">People often confuse a phone's Storage with its RAM. If you try to install an app and see a 'Not enough space' message, that is your Storage running out. But if your phone slows down, or apps constantly reload when you switch between them, that is a RAM issue. When you open multiple apps at once — say WhatsApp, YouTube, and Chrome — each one occupies a portion of RAM. When RAM runs out, the phone starts closing background apps to free up space. This is why more RAM = better multitasking. A phone with 4 GB of RAM struggles to keep many apps open simultaneously, whereas a phone with 12 GB handles it smoothly.</div>
+      </div>
+    </div>
+
+    
+  </section>
+
+  <!-- ── 5. Storage ── -->
+  <section class="section">
+    <div class="section-label">Section 05</div>
+    <h2 class="section-title"><span class="num">5.</span>Storage (Secondary Memory)</h2>
+
+    <p style="color:var(--text-muted); font-size:14px; margin-bottom:20px;">
+      Storage retains data permanently even without power. It is much slower than RAM but offers far greater capacity at lower cost.
+    </p>
+
+    <table class="styled-table">
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Speed</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>HDD (Hard Disk Drive)</td>
+          <td>Mechanical spinning disk. Stores data magnetically on rotating platters.</td>
+          <td style="color:#b45309">Slower</td>
+        </tr>
+        <tr>
+          <td>SSD (Solid State Drive)</td>
+          <td>No moving parts. Stores data in flash memory chips. Far faster than HDD.</td>
+          <td style="color:#065f46">Much Faster</td>
+        </tr>
+        <tr>
+          <td>USB Flash / Memory Card</td>
+          <td>Portable flash memory for transferring files between devices.</td>
+          <td style="color:#3b49c9">Moderate</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="phone-perspective" style="margin-top:16px;">
+      <span class="ph-icon">📱</span>
+      <div>
+        <div class="ph-label">Smartphone Perspective — Storage</div>
+        <div class="ph-text">When you buy a phone advertised as <strong>"128 GB"</strong>, that is the phone's <strong>storage (secondary memory)</strong> — not RAM. This is where your photos, videos, apps, and music are saved permanently. It is the equivalent of an SSD in a laptop. When you get the "Storage full" warning and can no longer take new photos, you have run out of this storage — not RAM. </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── 6. Input/Output & Network ── -->
+  <section class="section">
+    <div class="section-label">Section 06</div>
+    <h2 class="section-title"><span class="num">6.</span>Input / Output Devices &amp; Network</h2>
+
+    <div class="component-grid">
+      <div class="component-card" style="--card-accent:#00d4aa">
+        <span class="card-icon">⌨️</span>
+        <div class="card-title">Input Devices</div>
+        <div class="card-desc">Accept data from the user and send it to the CPU. Examples: keyboard, mouse, microphone, scanner, camera, touchscreen.</div>
+      </div>
+      <div class="component-card" style="--card-accent:#ff6b35">
+        <span class="card-icon">🖥️</span>
+        <div class="card-title">Output Devices</div>
+        <div class="card-desc">Deliver processed results from the CPU to the user. Examples: monitor, printer, speakers, projector.</div>
+      </div>
+      <div class="component-card" style="--card-accent:#7c8cf8">
+        <span class="card-icon">🌐</span>
+        <div class="card-title">Network Connection</div>
+        <div class="card-desc">Allows the computer to communicate with other devices and the internet. Can be thought of as a very slow, remote form of secondary memory — you retrieve data from it, but it is not always reliable.</div>
+      </div>
+    </div>
+
+    <div class="phone-perspective" style="margin-top:16px;">
+      <span class="ph-icon">📱</span>
+      <div>
+        <div class="ph-label">Smartphone Perspective — I/O &amp; Network</div>
+        <div class="ph-text">Your smartphone is almost entirely made of I/O devices. The <strong>touchscreen</strong> is both an input (you tap it) and an output (it shows you content). The <strong>camera</strong> is an input device; the <strong>speaker</strong> is an output device. The <strong>microphone</strong> is input. The <strong>Wi-Fi and mobile data</strong> (4G/5G) chip is your network connection — without it, your phone cannot reach the internet, just like a desktop without a network card.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── 7. Motherboard ── -->
+  <section class="section">
+    <div class="section-label">Section 07</div>
+    <h2 class="section-title"><span class="num">7.</span>The Motherboard — A Visual Walkthrough</h2>
+
+    <p style="color:var(--text-muted); font-size:14px; margin-bottom:24px;">
+      The <strong style="color:var(--text)">motherboard</strong> is the main circuit board that connects all hardware components together. Every component discussed above either sits on the motherboard or connects to it. The board below is an <strong style="color:var(--text)">Esonic</strong> micro-ATX motherboard — a real example used in everyday desktop computers.
+    </p>
+
+    <div class="mb-layout">
+
+      <!-- Left: image -->
+      <div class="mb-image-box">
+        <img src="motherboard.jpeg" alt="Esonic Motherboard showing CPU socket, RAM slots, PCIe slots, SATA ports, heatsinks, ATX power connector, and I/O panel">
+        <div class="mb-image-caption">▸ Esonic Micro-ATX Motherboard (photographed 2026)</div>
+      </div>
+
+      <!-- Right: component list -->
+      <div class="mb-components">
+
+        <div class="mb-item">
+          <div class="mb-num">1</div>
+          <div>
+            <div class="mb-name">CPU Socket (LGA)</div>
+            <div class="mb-desc">The large square socket in the lower-centre of the board. The processor (CPU) plugs in here. The metal lever locks it in place. </div>
+          </div>
+        </div>
+
+        <div class="mb-item">
+          <div class="mb-num">2</div>
+          <div>
+            <div class="mb-name">RAM Slots (DIMM)</div>
+            <div class="mb-desc">The long blue/black slots along the left edge. RAM sticks (one is installed here in green) slide into these. </div>
+          </div>
+        </div>
+
+        <div class="mb-item">
+          <div class="mb-num">3</div>
+          <div>
+            <div class="mb-name">Chipset Heatsink (Northbridge)</div>
+            <div class="mb-desc">The silver finned block near the centre-top labelled "Esonic". It cools the chipset chip beneath it (Northbridge) — the controller that manages communication between CPU, RAM, and PCIe slots.</div>
+          </div>
+        </div>
+
+        <div class="mb-item">
+          <div class="mb-num">4</div>
+          <div>
+            <div class="mb-name">PCIe Slot (x16 — Blue)</div>
+            <div class="mb-desc">The long blue slot near the top. Primarily used for the dedicated graphics card (GPU). PCIe (Peripheral Component Interconnect Express) is the fastest expansion slot standard.</div>
+          </div>
+        </div>
+
+        <div class="mb-item">
+          <div class="mb-num">5</div>
+          <div>
+            <div class="mb-name">PCIe / PCI Slots (Smaller)</div>
+            <div class="mb-desc">Shorter expansion slots for adding additional components such as network cards, sound cards, or Wi-Fi adapters.</div>
+          </div>
+        </div>
+
+        <div class="mb-item">
+          <div class="mb-num">6</div>
+          <div>
+            <div class="mb-name">SATA Connectors</div>
+            <div class="mb-desc">The small L-shaped teal/blue ports along the upper-left edge. Data cables from HDDs and SSDs plug here, connecting storage devices to the motherboard.</div>
+          </div>
+        </div>
+
+        <div class="mb-item">
+          <div class="mb-num">7</div>
+          <div>
+            <div class="mb-name">ATX Power Connector (24-pin)</div>
+            <div class="mb-desc">The large white 2×12 pin block on the right side. The main power cable from the PSU (Power Supply Unit) plugs here to power the entire motherboard.</div>
+          </div>
+        </div>
+
+        <div class="mb-item">
+          <div class="mb-num">8</div>
+          <div>
+            <div class="mb-name">CPU Power Connector </div>
+            <div class="mb-desc">The smaller connector near the power connector. Supplies dedicated power directly to the CPU, separate from the main board power.</div>
+          </div>
+        </div>
+
+        <div class="mb-item">
+          <div class="mb-num">9</div>
+          <div>
+            <div class="mb-name">I/O Panel (Back Panel)</div>
+            <div class="mb-desc">The cluster of ports on the right edge — USB ports (rectangular), Ethernet (RJ45), audio jacks, video output(VGA), Parallel Port (LPT), Serial Port (COM) — Male. These are what you see on the back of a desktop computer case.</div>
+          </div>
+        </div>
+
+        <div class="mb-item">
+          <div class="mb-num">10</div>
+          <div>
+            <div class="mb-name">CMOS Battery</div>
+            <div class="mb-desc">The round silver coin cell battery on the left side. Keeps the system clock running and preserves BIOS settings even when the PC is unplugged.</div>
+          </div>
+        </div>
+
+        <div class="mb-item" style="border-color: rgba(196,74,20,0.35);">
+          <div class="mb-num" style="background:var(--accent2);">11</div>
+          <div>
+            <div class="mb-name" style="color:var(--accent2);">BIOS ROM Chip</div>
+            <div class="mb-desc">A small rectangular chip (PM25L0080) soldered directly onto the motherboard — on this board it is located near the top-right area, often marked with a sticker or the manufacturer label. This is the computer's <strong style="color:var(--text)">ROM (Read-Only Memory)</strong>. </div>
+          </div>
+        </div>
+
+        <div class="mb-item">
+          <div class="mb-num">12</div>
+          <div>
+            <div class="mb-name">IDE / Floppy Connector (Red)</div>
+            <div class="mb-desc">The red ribbon cable connector (visible on left edge). A legacy interface for older storage devices. Mostly obsolete today, replaced by SATA.</div>
+          </div>
+        </div>
+
+        <div class="mb-item">
+          <div class="mb-num">13</div>
+          <div>
+            <div class="mb-name">Front Panel Headers</div>
+            <div class="mb-desc">Small pin rows at the top of the board (labelled PANEL, F_AUDIO, USB 2.0, etc.). The case's power button, reset button, LEDs, and front USB/audio ports connect here.</div>
+          </div>
+        </div>
+
+
+
+      </div>
+    </div>
+
+    <div class="info-note" style="margin-top:24px;">
+      <span class="icon">🔑</span>
+      <span><strong style="color:var(--text)">Key takeaway:</strong> The motherboard is the backbone that physically and electrically connects every component. Without it, individual parts like the CPU and RAM cannot communicate. Its quality and chipset determine which CPUs, RAM types, and expansion cards are compatible.</span>
+    </div>
+
+    <div class="phone-perspective" style="margin-top:14px;">
+      <span class="ph-icon">📱</span>
+      <div>
+        <div class="ph-label">Smartphone Perspective — The Motherboard</div>
+        <div class="ph-text">Smartphones do not have a traditional motherboard with separate plug-in components. Instead, they use a tiny <strong>PCB (Printed Circuit Board)</strong> where almost everything — CPU, RAM, storage, modem — is permanently soldered or integrated into a single <strong>SoC (System on a Chip)</strong>. This is why you cannot upgrade the RAM in your phone the way you can add a RAM stick to a desktop — it is all fused together. The trade-off is extreme compactness and power efficiency.</div>
+      </div>
+    </div>
+
+    <!-- ── Other Components Subsection ── -->
+    <div style="margin-top:40px;">
+
+      <div style="border-top: 1px dashed var(--border); padding-top: 28px; margin-bottom: 20px;">
+        <div class="section-label" style="margin-bottom:6px;">Going Deeper</div>
+        <h3 style="font-family:var(--heading-font); font-size:16px; color:var(--text); letter-spacing:-0.01em; margin-bottom:14px;">
+          Other Notable Components on the Motherboard
+        </h3>
+        <p style="color:var(--text-muted); font-size:13.5px; line-height:1.7; margin-bottom:20px;">
+          Beyond the major components listed above, a motherboard is populated with <strong style="color:var(--text)">dozens of smaller specialised chips and passive components</strong>, each performing a specific job. You would find components such as:
+          <strong style="color:var(--accent)">capacitors</strong> (store and smooth electrical charge, the cylindrical gold/black components),
+          <strong style="color:var(--accent)">resistors</strong> (limit current flow, tiny rectangular components),
+          <strong style="color:var(--accent)">MOSFETs / transistors</strong> (act as electronic switches in power circuits),
+          <strong style="color:var(--accent)">operational amplifiers / op-amps</strong> (amplify and compare analog signals — e.g. the LM358D we found),
+          <strong style="color:var(--accent)">crystal oscillators</strong> (generate precise clock frequencies),
+          <strong style="color:var(--accent)">inductors / chokes</strong> (filter electrical noise in power lines),
+          <strong style="color:var(--accent)">network / Ethernet controllers</strong> (manage wired internet),
+          <strong style="color:var(--accent)">USB controllers</strong> (manage USB port communication), and
+          <strong style="color:var(--accent)">clock generator chips</strong> (synchronise all components to a common timing signal).
+          The four chips we identified on this actual board during class are highlighted below.
+        </p>
+      </div>
+
+      <!-- Card grid for the 4 chips -->
+      <div style="display:grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap:16px;">
+
+        <!-- VRM -->
+        <div style="background:#fff; border:1px solid var(--border); border-top: 3px solid #d97706; border-radius:8px; padding:20px 22px; box-shadow:0 1px 6px rgba(0,0,0,0.05);">
+          <div style="font-size:20px; margin-bottom:8px;">⚡</div>
+          <div style="font-family:var(--heading-font); font-size:10px; color:#b45309; letter-spacing:0.08em; text-transform:uppercase; margin-bottom:4px;">VRM — Voltage Regulator Module</div>
+          <div style="font-family:var(--heading-font); font-size:11px; color:var(--text-dim); margin-bottom:10px; letter-spacing:0.04em;">Under the top-left heatsink</div>
+          <div style="font-size:13.5px; color:var(--text-muted); line-height:1.65;">
+            The heatsink in the top-left corner of the board covers the <strong style="color:var(--text)">Voltage Regulator Module (VRM)</strong> — a circuit made of MOSFETs, inductors, and capacitors. The power supply unit (PSU) delivers 12V to the board, but the CPU needs a much lower, precisely regulated voltage (typically 0.8V–1.4V depending on load). The VRM performs this conversion in real time, thousands of times per second. This conversion process generates significant heat — which is why it needs its own heatsink. 
+          </div>
+          <div style="margin-top:12px; background:#fffbeb; border-left:2px solid #d97706; border-radius:3px; padding:8px 12px; font-size:12.5px; color:var(--text-muted);">
+            📱 <strong style="color:var(--text);">Smartphone link:</strong> Your phone's charging IC performs the same job — converting battery voltage to the precise level each chip needs. That is partly why phones warm up while charging.
+          </div>
+        </div>
+
+        <!-- W83627DHG-P -->
+        <div style="background:#fff; border:1px solid var(--border); border-top: 3px solid var(--accent); border-radius:8px; padding:20px 22px; box-shadow:0 1px 6px rgba(0,0,0,0.05);">
+          <div style="font-size:20px; margin-bottom:8px;">🕹️</div>
+          <div style="font-family:var(--heading-font); font-size:10px; color:var(--accent); letter-spacing:0.08em; text-transform:uppercase; margin-bottom:4px;">Winbond W83627DHG-P</div>
+          <div style="font-family:var(--heading-font); font-size:11px; color:var(--text-dim); margin-bottom:10px; letter-spacing:0.04em;">Super I/O Controller</div>
+          <div style="font-size:13.5px; color:var(--text-muted); line-height:1.65;">
+            This is the <strong style="color:var(--text)">Super I/O Controller</strong> — a single chip that manages all the legacy and low-speed input/output functions of the motherboard. It handles the <strong style="color:var(--text)">keyboard and mouse ports</strong> (PS/2), <strong style="color:var(--text)">serial (COM) ports</strong>, the <strong style="color:var(--text)">hardware monitoring system</strong> (reading CPU temperature, fan speeds, and voltages). It acts as a bridge between the slow legacy peripherals and the faster chipset. 
+          </div>
+          <div style="margin-top:12px; background:#e6f7f4; border-left:2px solid var(--accent); border-radius:3px; padding:8px 12px; font-size:12.5px; color:var(--text-muted);">
+            📱 <strong style="color:var(--text);">Smartphone link:</strong> On a smartphone, similar I/O management functions are handled by small sub-chips on the PCB that manage the touchscreen controller, fingerprint sensor, and button inputs.
+          </div>
+        </div>
+
+        <!-- ALC662 -->
+        <div style="background:#fff; border:1px solid var(--border); border-top: 3px solid var(--accent3); border-radius:8px; padding:20px 22px; box-shadow:0 1px 6px rgba(0,0,0,0.05);">
+          <div style="font-size:20px; margin-bottom:8px;">🔊</div>
+          <div style="font-family:var(--heading-font); font-size:10px; color:var(--accent3); letter-spacing:0.08em; text-transform:uppercase; margin-bottom:4px;">Realtek ALC662</div>
+          <div style="font-family:var(--heading-font); font-size:11px; color:var(--text-dim); margin-bottom:10px; letter-spacing:0.04em;">HD Audio Codec · 48 pins (12 × 4 sides)</div>
+          <div style="font-size:13.5px; color:var(--text-muted); line-height:1.65;">
+            The <strong style="color:var(--text)">Realtek ALC662</strong> is the board's <strong style="color:var(--text)">High-Definition Audio Codec</strong>. It is responsible for all sound on the computer. It converts <strong style="color:var(--text)">digital audio signals → analog sound</strong> sent to your speakers or headphones (Digital-to-Analog Conversion, DAC), and also converts <strong style="color:var(--text)">analog sound → digital</strong> when you use a microphone (Analog-to-Digital Conversion, ADC). It supports up to 5.1 surround sound output. It is located right next to the <strong style="color:var(--text)">F_AUDIO header</strong>. 
+          </div>
+          <div style="margin-top:12px; background:#eef2ff; border-left:2px solid var(--accent3); border-radius:3px; padding:8px 12px; font-size:12.5px; color:var(--text-muted);">
+            📱 <strong style="color:var(--text);">Smartphone link:</strong> Every smartphone has an equivalent audio codec chip — when you play music through your speaker or record a voice note, this is the chip doing the digital-to-analog (and analog-to-digital) conversion. On phones it is usually integrated into the SoC.
+          </div>
+        </div>
+
+        <!-- W83116WG -->
+        <div style="background:#fff; border:1px solid var(--border); border-top: 3px solid var(--accent2); border-radius:8px; padding:20px 22px; box-shadow:0 1px 6px rgba(0,0,0,0.05);">
+          <div style="font-size:20px; margin-bottom:8px;">📊</div>
+          <div style="font-family:var(--heading-font); font-size:10px; color:var(--accent2); letter-spacing:0.08em; text-transform:uppercase; margin-bottom:4px;">Winbond W83116WG-511</div>
+          <div style="font-family:var(--heading-font); font-size:11px; color:var(--text-dim); margin-bottom:10px; letter-spacing:0.04em;">Hardware Monitor / Power Controller</div>
+          <div style="font-size:13.5px; color:var(--text-muted); line-height:1.65;">
+            The <strong style="color:var(--text)">Winbond W83116WG-511</strong> is a <strong style="color:var(--text)">hardware monitoring and power management controller</strong>. It continuously monitors critical system parameters — CPU temperature, system temperature, fan rotation speeds (RPM), and supply voltages — and reports these to the Super I/O chip or directly to the BIOS. If the CPU overheats, it is this chip (working alongside the BIOS) that triggers <strong style="color:var(--text)">thermal throttling</strong> (slowing down the CPU) or an emergency shutdown to prevent hardware damage. 
+          </div>
+          <div style="margin-top:12px; background:#fff0eb; border-left:2px solid var(--accent2); border-radius:3px; padding:8px 12px; font-size:12.5px; color:var(--text-muted);">
+            📱 <strong style="color:var(--text);">Smartphone link:</strong> Smartphones have equivalent thermal management circuits — when your phone gets too hot during gaming, the SoC automatically reduces its clock speed to cool down. This is the mobile equivalent of what this chip helps orchestrate on a desktop.
+          </div>
+        </div>
+
+      </div><!-- end grid -->
+
+      <div style="margin-top:18px; background:#e6f7f4; border:1px solid #a7d7ce; border-radius:6px; padding:14px 18px; font-size:13px; color:var(--text-muted); display:flex; gap:10px; align-items:flex-start;">
+        <span style="font-size:16px; flex-shrink:0;">🧩</span>
+        <span><strong style="color:var(--text)">Class takeaway:</strong> A motherboard is not just a connector — it is a complete ecosystem of specialised chips, each an expert at one job. The CPU is the brain, but it depends on this entire team of support chips to communicate with the outside world, stay cool, produce sound, and receive correct voltage. Remove any one of them and a specific function stops working.</span>
+      </div>
+
+    </div><!-- end other components -->
+  </section>
+
+  <!-- ── 8. Summary Table ── -->
+  <section class="section">
+    <div class="section-label">Section 08</div>
+    <h2 class="section-title"><span class="num">8.</span>Quick Reference Summary</h2>
+
+    <table class="styled-table">
+      <thead>
+        <tr>
+          <th>Component</th>
+          <th>Role</th>
+          <th>Key Property</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>CPU</td>
+          <td>Executes all instructions; brain of the system</td>
+          <td>Speed (GHz), Cores, Cache</td>
+        </tr>
+        <tr>
+          <td>RAM</td>
+          <td>Fast temporary workspace for the CPU</td>
+          <td>Volatile; lost on power-off</td>
+        </tr>
+        <tr>
+          <td>ROM</td>
+          <td>Permanent boot instructions</td>
+          <td>Non-volatile; read-only</td>
+        </tr>
+        <tr>
+          <td>HDD / SSD</td>
+          <td>Permanent file and program storage</td>
+          <td>Non-volatile; much slower than RAM</td>
+        </tr>
+        <tr>
+          <td>Input Devices</td>
+          <td>Send data from user → computer</td>
+          <td>Keyboard, mouse, mic, camera</td>
+        </tr>
+        <tr>
+          <td>Output Devices</td>
+          <td>Deliver results from computer → user</td>
+          <td>Monitor, printer, speakers</td>
+        </tr>
+        <tr>
+          <td>Network</td>
+          <td>Connect to other systems and the internet</td>
+          <td>Slow, remote, not always available</td>
+        </tr>
+        <tr>
+          <td>Motherboard</td>
+          <td>Backbone connecting all components</td>
+          <td>Determines compatibility of all parts</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+</div>
+
+<!-- ══════════════════════ FOOTER ══════════════════════ -->
+<footer class="page-footer">
+  <span>Introduction to Computer Science &amp; Programming</span>
+  <span class="footer-accent">Module 1 — Hardware Architecture</span>
+  <span>Lecture Sheet</span>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,1113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Lab 1 — Introduction to Python</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,600;0,9..144,800;1,9..144,300&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --bg:         #f7f6f2;
+    --bg2:        #ffffff;
+    --surface:    #ffffff;
+    --surface2:   #f0ede6;
+    --border:     #ddd8ce;
+    --border2:    #c8c2b5;
+    --accent:     #1a56db;
+    --accent-lt:  #e8f0fd;
+    --accent2:    #6d28d9;
+    --accent2-lt: #f0ebff;
+    --green:      #065f46;
+    --green-lt:   #d1fae5;
+    --yellow:     #92400e;
+    --yellow-lt:  #fef3c7;
+    --red:        #991b1b;
+    --red-lt:     #fee2e2;
+    --text:       #1a1a1a;
+    --text2:      #374151;
+    --muted:      #6b7280;
+    --code-bg:    #1e2235;
+    --code-text:  #cdd6f4;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Fraunces', Georgia, serif;
+    font-weight: 300;
+    line-height: 1.8;
+    font-size: 15.5px;
+  }
+
+  /* ── Header ── */
+  header {
+    background: var(--accent);
+    background: linear-gradient(135deg, #1a3a8f 0%, #1a56db 60%, #2563eb 100%);
+    color: #fff;
+    padding: 52px 0 44px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  header::after {
+    content: '';
+    position: absolute;
+    bottom: -1px; left: 0; right: 0;
+    height: 32px;
+    background: var(--bg);
+    clip-path: ellipse(55% 100% at 50% 100%);
+  }
+  .course-tag {
+    display: inline-block;
+    background: rgba(255,255,255,0.18);
+    border: 1px solid rgba(255,255,255,0.4);
+    color: #fff;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 4px 16px;
+    border-radius: 20px;
+    margin-bottom: 16px;
+  }
+  header h1 {
+    font-size: clamp(24px, 5vw, 40px);
+    font-weight: 800;
+    color: #fff;
+    letter-spacing: -0.3px;
+    margin-bottom: 4px;
+  }
+  header h1 span { color: #bfdbfe; }
+  .header-meta {
+    margin-top: 14px;
+    display: flex;
+    justify-content: center;
+    gap: 24px;
+    flex-wrap: wrap;
+    color: rgba(255,255,255,0.78);
+    font-size: 13px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .header-meta span { display: flex; align-items: center; gap: 6px; }
+  .dot { width:7px; height:7px; border-radius:50%; background: #bfdbfe; display:inline-block; }
+
+  /* ── Layout ── */
+  .container { max-width: 860px; margin: 0 auto; padding: 0 24px 80px; }
+
+  /* ── TOC ── */
+  .toc {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--accent);
+    border-radius: 10px;
+    padding: 22px 28px;
+    margin: 36px 0 44px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+  }
+  .toc h2 {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--muted);
+    margin-bottom: 12px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .toc ol { padding-left: 20px; }
+  .toc li { margin: 5px 0; }
+  .toc a { color: var(--accent); text-decoration: none; font-weight: 400; }
+  .toc a:hover { text-decoration: underline; }
+
+  /* ── Section ── */
+  section { margin-bottom: 52px; }
+
+  .section-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--accent-lt);
+    border: 1px solid #c3d8fb;
+    color: var(--accent);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10.5px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 3px 12px;
+    border-radius: 20px;
+    margin-bottom: 8px;
+  }
+  .section-label.bonus {
+    background: var(--accent2-lt);
+    border-color: #c4b5fd;
+    color: var(--accent2);
+  }
+  section h2 {
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--text);
+    margin-bottom: 4px;
+    letter-spacing: -0.2px;
+  }
+  .time-badge {
+    font-size: 12px;
+    color: var(--muted);
+    font-family: 'JetBrains Mono', monospace;
+    margin-bottom: 16px;
+  }
+  section h3 {
+    font-size: 14.5px;
+    font-weight: 600;
+    color: var(--text);
+    margin: 24px 0 8px;
+    padding-left: 12px;
+    border-left: 3px solid var(--accent);
+    font-family: 'JetBrains Mono', monospace;
+  }
+  section p { color: var(--text2); margin-bottom: 12px; }
+  section ul, section ol { padding-left: 22px; color: var(--text2); margin-bottom: 12px; }
+  section li { margin: 5px 0; }
+  code {
+    background: #e8edf8;
+    color: #1a3a8f;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    padding: 1px 6px;
+    border-radius: 4px;
+    border: 1px solid #c3d0ee;
+  }
+
+  /* ── Divider ── */
+  hr { border: none; border-top: 1px solid var(--border); margin: 48px 0; }
+
+  /* ── Code Block ── */
+  .code-block {
+    background: var(--code-bg);
+    border-radius: 12px;
+    overflow: hidden;
+    margin: 14px 0 6px;
+    font-family: 'JetBrains Mono', monospace;
+    box-shadow: 0 4px 18px rgba(0,0,0,0.13);
+  }
+  .code-header {
+    background: #161928;
+    border-bottom: 1px solid #2a3050;
+    padding: 8px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .code-title {
+    font-size: 11px;
+    font-weight: 600;
+    color: #7a8aaa;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .code-dots { display: flex; gap: 6px; }
+  .code-dots span { width:10px; height:10px; border-radius:50%; }
+  .code-dots .d1 { background:#f87171; }
+  .code-dots .d2 { background:#fbbf24; }
+  .code-dots .d3 { background:#34d399; }
+  pre {
+    padding: 18px 22px;
+    overflow-x: auto;
+    font-size: 13.5px;
+    line-height: 1.85;
+    color: var(--code-text);
+    white-space: pre;
+  }
+
+  /* Syntax colours */
+  .kw  { color: #cba6f7; font-weight: 600; }
+  .fn  { color: #89b4fa; }
+  .str { color: #a6e3a1; }
+  .num { color: #fab387; }
+  .cm  { color: #585b70; font-style: italic; }
+  .op  { color: #f38ba8; }
+  .var { color: #cdd6f4; }
+
+  /* ── Output Block ── */
+  .output-block {
+    background: #f8fdf9;
+    border: 1px solid #bbf7d0;
+    border-radius: 0 0 10px 10px;
+    padding: 12px 20px;
+    margin: 0 0 20px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    color: var(--green);
+  }
+  .output-block .out-label {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+    margin-bottom: 5px;
+  }
+
+  /* ── Callout ── */
+  .callout {
+    border-radius: 10px;
+    padding: 14px 18px;
+    margin: 14px 0;
+    font-size: 14.5px;
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+  }
+  .callout-icon { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
+  .callout.info  { background: var(--accent-lt);  border-left: 3px solid var(--accent);  }
+  .callout.warn  { background: var(--yellow-lt);  border-left: 3px solid #d97706; }
+  .callout.tip   { background: var(--green-lt);   border-left: 3px solid #059669; }
+  .callout.purple{ background: var(--accent2-lt); border-left: 3px solid var(--accent2); }
+  .callout p { margin: 0; color: var(--text2); }
+
+  /* ── Table ── */
+  table {
+    width: 100%; border-collapse: collapse;
+    margin: 12px 0 20px;
+    font-size: 14px;
+    box-shadow: 0 1px 6px rgba(0,0,0,0.06);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  th {
+    background: var(--accent);
+    color: #fff;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding: 10px 14px;
+    text-align: left;
+  }
+  td {
+    padding: 9px 14px;
+    border-bottom: 1px solid var(--border);
+    color: var(--text2);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    background: #fff;
+  }
+  tr:last-child td { border-bottom: none; }
+  tr:nth-child(even) td { background: #f9f8f5; }
+
+  /* ── Problem Card ── */
+  .problem-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 22px 24px;
+    margin: 20px 0;
+    position: relative;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+  }
+  .problem-card .p-num {
+    position: absolute;
+    top: -13px; left: 18px;
+    background: var(--accent);
+    color: #fff;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 2px 14px;
+    border-radius: 20px;
+  }
+  .problem-card .p-num.bonus { background: #d97706; }
+  .problem-card h4 {
+    font-size: 15.5px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 7px;
+  }
+  .problem-card p { margin: 0; color: var(--text2); font-size: 14px; }
+  .sample-io { margin-top: 12px; display: flex; gap: 12px; flex-wrap: wrap; }
+  .io-box {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 8px 14px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12.5px;
+  }
+  .io-box .io-label { color: var(--muted); font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 3px; }
+  .io-box .io-val { color: var(--green); }
+
+  /* ── Fun Banner ── */
+  .fun-banner {
+    background: linear-gradient(135deg, #4c1d95 0%, #1e40af 100%);
+    border-radius: 14px;
+    padding: 28px 30px 22px;
+    margin-bottom: 26px;
+    color: #fff;
+  }
+  .fun-banner h2 { color: #fff; font-size: 22px; }
+  .fun-banner .time-badge { color: rgba(255,255,255,0.7); margin-top: 4px; }
+  .fun-banner .section-label { background: rgba(255,255,255,0.15); border-color: rgba(255,255,255,0.3); color: #e0d7ff; margin-bottom: 10px; }
+
+  /* ── Footer ── */
+  footer {
+    text-align: center;
+    padding: 28px;
+    border-top: 2px solid var(--border);
+    color: var(--muted);
+    font-size: 12px;
+    font-family: 'JetBrains Mono', monospace;
+    background: var(--surface2);
+  }
+
+  /* ── Print ── */
+  @media print {
+    body { background: #fff; font-size: 13px; }
+    header { background: #1a3a8f !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .code-block { box-shadow: none; border: 1px solid #ccc; }
+    .problem-card { box-shadow: none; }
+    .fun-banner { background: #4c1d95 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    th { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    section { page-break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══════ HEADER ═══════ -->
+<header>
+  <div class="course-tag">Intro to CS &amp; Programming</div>
+  <h1>Lab 1 &mdash; <span>Getting Started with Python</span></h1>
+  <div class="header-meta">
+    <span><span class="dot"></span> Session Duration: ~2 Hours</span>
+    <span><span class="dot"></span> Language: Python 3</span>
+    <span><span class="dot"></span> Lab 01 of 12</span>
+  </div>
+</header>
+
+<div class="container">
+
+  <!-- TOC -->
+  <div class="toc">
+    <h2>📋 Table of Contents</h2>
+    <ol>
+      <li><a href="#part1">Environment Setup</a></li>
+      <li><a href="#part2">print() — Your First Output</a></li>
+      <li><a href="#part3">Variables &amp; Data Types</a></li>
+      <li><a href="#part4">User Input with input()</a></li>
+      <li><a href="#part5">Mathematical Operators &amp; Expressions</a></li>
+      <li><a href="#part6">Relational Operators</a></li>
+      <li><a href="#part7">Logical Operators</a></li>
+      <li><a href="#part8">Conditional Statements</a></li>
+      <li><a href="#part9">Finding Max / Min</a></li>
+      <li><a href="#part10">Python Meets Hardware</a></li>
+      <li><a href="#part11">In-Class Contest Problems</a></li>
+    </ol>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════
+       PART 1 — Environment Setup
+  ═══════════════════════════════════════════════════════ -->
+  <section id="part1">
+    <div class="section-label">Part 1</div>
+    <h2>Environment Setup</h2>
+    <div class="time-badge">⏱ ~15 minutes</div>
+
+    <h3>Installing Python</h3>
+    <ul>
+      <li>Download Python 3 from <strong>python.org/downloads</strong></li>
+      <li>During installation, check <strong>"Add Python to PATH"</strong></li>
+      <li>Verify installation by opening a terminal and typing:</li>
+    </ul>
+    <div class="code-block">
+      <div class="code-header">
+        <div class="code-dots"><span class="d1"></span><span class="d2"></span><span class="d3"></span></div>
+        <div class="code-title">Terminal / Command Prompt</div>
+      </div>
+      <pre>python --version</pre>
+    </div>
+
+    <h3>Choosing an Editor</h3>
+    <ul>
+      <li><strong>IDLE</strong> — comes bundled with Python, simplest option for beginners</li>
+      <li><strong>VS Code</strong> — professional choice; install the Python extension</li>
+    </ul>
+
+    <h3>Two Modes of Running Python</h3>
+    <div class="callout info">
+      <div class="callout-icon">💡</div>
+      <p><strong>Interactive Mode:</strong> Type code line by line directly in the Python shell (IDLE). Great for quick experiments.<br/>
+      <strong>Script Mode:</strong> Write code in a <code>.py</code> file and run the whole file. Used for real programs.</p>
+    </div>
+
+    <h3>Understanding Error Messages</h3>
+    <p>You will see red error messages. Don't panic. There are two main kinds:</p>
+    <table>
+      <tr><th>Error Type</th><th>Meaning</th><th>Example</th></tr>
+      <tr><td>SyntaxError</td><td>Code is written incorrectly — Python can't even read it</td><td>Forgetting a colon after <code>if</code></td></tr>
+      <tr><td>RuntimeError</td><td>Code is valid but crashes while running</td><td>Dividing a number by zero</td></tr>
+    </table>
+  </section>
+
+  <hr/>
+
+  <!-- ══════════════════════════════════════════════════════
+       PART 2 — print()
+  ═══════════════════════════════════════════════════════ -->
+  <section id="part2">
+    <div class="section-label">Part 2</div>
+    <h2>print() — Your First Output</h2>
+    <div class="time-badge">⏱ ~5 minutes</div>
+
+    <p>The <code>print()</code> function displays output to the screen. It is the most fundamental tool for seeing what your program is doing.</p>
+
+    <div class="code-block">
+      <div class="code-header">
+        <div class="code-dots"><span class="d1"></span><span class="d2"></span><span class="d3"></span></div>
+        <div class="code-title">basic_print.py</div>
+      </div>
+      <pre><span class="cm"># Printing a simple message</span>
+<span class="fn">print</span>(<span class="str">"Hello, World!"</span>)
+
+<span class="cm"># Printing multiple values separated by a comma</span>
+<span class="fn">print</span>(<span class="str">"My name is"</span>, <span class="str">"Alice"</span>)
+
+<span class="cm"># Using sep= to change the separator between values</span>
+<span class="fn">print</span>(<span class="str">"Apple"</span>, <span class="str">"Banana"</span>, <span class="str">"Cherry"</span>, sep<span class="op">=</span><span class="str">" | "</span>)
+
+<span class="cm"># Using end= to change what is printed at the end of the line</span>
+<span class="fn">print</span>(<span class="str">"Hello"</span>, end<span class="op">=</span><span class="str">" "</span>)
+<span class="fn">print</span>(<span class="str">"World"</span>)</pre>
+    </div>
+    <div class="output-block">
+      <div class="out-label">Output</div>
+      Hello, World!<br/>
+      My name is Alice<br/>
+      Apple | Banana | Cherry<br/>
+      Hello World
+    </div>
+  </section>
+
+  <hr/>
+
+  <!-- ══════════════════════════════════════════════════════
+       PART 3 — Variables
+  ═══════════════════════════════════════════════════════ -->
+  <section id="part3">
+    <div class="section-label">Part 3</div>
+    <h2>Variables &amp; Data Types</h2>
+    <div class="time-badge">⏱ ~10 minutes</div>
+
+    <p>A <strong>variable</strong> is a named storage location in memory. You use it to hold a value that your program can use and change later.</p>
+
+    <h3>Naming Rules</h3>
+    <ul>
+      <li>Can contain letters, digits, and underscores (<code>_</code>)</li>
+      <li>Cannot start with a digit — e.g., <code>2name</code> is invalid</li>
+      <li>Cannot contain spaces — use underscores instead: <code>my_name</code></li>
+      <li>Case-sensitive: <code>age</code> and <code>Age</code> are two different variables</li>
+    </ul>
+
+    <h3>Common Data Types</h3>
+    <table>
+      <tr><th>Type</th><th>Keyword</th><th>Example</th></tr>
+      <tr><td>Integer</td><td>int</td><td><code>10, -5, 0</code></td></tr>
+      <tr><td>Decimal</td><td>float</td><td><code>3.14, -0.5</code></td></tr>
+      <tr><td>Text</td><td>str</td><td><code>"Hello"</code></td></tr>
+      <tr><td>Boolean</td><td>bool</td><td><code>True, False</code></td></tr>
+    </table>
+
+    <div class="code-block">
+      <div class="code-header">
+        <div class="code-dots"><span class="d1"></span><span class="d2"></span><span class="d3"></span></div>
+        <div class="code-title">variables.py</div>
+      </div>
+      <pre><span class="var">name</span> <span class="op">=</span> <span class="str">"Alice"</span>
+<span class="var">age</span>  <span class="op">=</span> <span class="num">20</span>
+<span class="var">gpa</span>  <span class="op">=</span> <span class="num">3.85</span>
+
+<span class="fn">print</span>(<span class="var">name</span>)
+<span class="fn">print</span>(<span class="var">age</span>)
+<span class="fn">print</span>(<span class="var">gpa</span>)
+
+<span class="cm"># type() tells you the data type of a variable</span>
+<span class="fn">print</span>(<span class="fn">type</span>(<span class="var">name</span>))
+<span class="fn">print</span>(<span class="fn">type</span>(<span class="var">age</span>))
+<span class="fn">print</span>(<span class="fn">type</span>(<span class="var">gpa</span>))</pre>
+    </div>
+    <div class="output-block">
+      <div class="out-label">Output</div>
+      Alice<br/>20<br/>3.85<br/>
+      &lt;class 'str'&gt;<br/>
+      &lt;class 'int'&gt;<br/>
+      &lt;class 'float'&gt;
+    </div>
+  </section>
+
+  <hr/>
+
+  <!-- ══════════════════════════════════════════════════════
+       PART 4 — input()
+  ═══════════════════════════════════════════════════════ -->
+  <section id="part4">
+    <div class="section-label">Part 4</div>
+    <h2>User Input with input()</h2>
+    <div class="time-badge">⏱ ~8 minutes</div>
+
+    <p>So far our programs used fixed values. The <code>input()</code> function lets the user type a value while the program is running, making programs interactive.</p>
+
+    <div class="callout warn">
+      <div class="callout-icon">⚠️</div>
+      <p><strong>Important:</strong> <code>input()</code> always returns a <strong>string</strong> (text), even if the user types a number. If you want to do arithmetic with it, you must convert it using <code>int()</code> or <code>float()</code>.</p>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header">
+        <div class="code-dots"><span class="d1"></span><span class="d2"></span><span class="d3"></span></div>
+        <div class="code-title">user_input.py</div>
+      </div>
+      <pre><span class="cm"># Taking a name as input (stays as string — no conversion needed)</span>
+<span class="var">name</span> <span class="op">=</span> <span class="fn">input</span>(<span class="str">"Enter your name: "</span>)
+<span class="fn">print</span>(<span class="str">"Hello,"</span>, <span class="var">name</span>)
+
+<span class="cm"># Taking numbers — must convert to int before doing arithmetic</span>
+<span class="var">a</span> <span class="op">=</span> <span class="fn">int</span>(<span class="fn">input</span>(<span class="str">"Enter first number: "</span>))
+<span class="var">b</span> <span class="op">=</span> <span class="fn">int</span>(<span class="fn">input</span>(<span class="str">"Enter second number: "</span>))
+
+<span class="var">total</span> <span class="op">=</span> <span class="var">a</span> <span class="op">+</span> <span class="var">b</span>
+<span class="fn">print</span>(<span class="str">"Sum ="</span>, <span class="var">total</span>)</pre>
+    </div>
+    <div class="output-block">
+      <div class="out-label">Output (example run)</div>
+      Enter your name: Alice<br/>
+      Hello, Alice<br/>
+      Enter first number: 10<br/>
+      Enter second number: 20<br/>
+      Sum = 30
+    </div>
+  </section>
+
+  <hr/>
+
+  <!-- ══════════════════════════════════════════════════════
+       PART 5 — Math Operators
+  ═══════════════════════════════════════════════════════ -->
+  <section id="part5">
+    <div class="section-label">Part 5</div>
+    <h2>Mathematical Operators &amp; Expressions</h2>
+    <div class="time-badge">⏱ ~10 minutes</div>
+
+    <table>
+      <tr><th>Operator</th><th>Name</th><th>Example</th><th>Result</th></tr>
+      <tr><td><code>+</code></td><td>Addition</td><td><code>10 + 3</code></td><td><code>13</code></td></tr>
+      <tr><td><code>-</code></td><td>Subtraction</td><td><code>10 - 3</code></td><td><code>7</code></td></tr>
+      <tr><td><code>*</code></td><td>Multiplication</td><td><code>10 * 3</code></td><td><code>30</code></td></tr>
+      <tr><td><code>/</code></td><td>Division</td><td><code>10 / 3</code></td><td><code>3.333...</code></td></tr>
+      <tr><td><code>//</code></td><td>Floor Division</td><td><code>10 // 3</code></td><td><code>3</code></td></tr>
+      <tr><td><code>%</code></td><td>Modulus (Remainder)</td><td><code>10 % 3</code></td><td><code>1</code></td></tr>
+      <tr><td><code>**</code></td><td>Exponentiation</td><td><code>2 ** 8</code></td><td><code>256</code></td></tr>
+    </table>
+
+    <div class="callout tip">
+      <div class="callout-icon">🔑</div>
+      <p><strong>Modulus (%) is very important.</strong> It gives the <em>remainder</em> after division. A classic use: <code>number % 2</code> equals <code>0</code> if the number is even, or <code>1</code> if it is odd. You will use this constantly going forward.</p>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header">
+        <div class="code-dots"><span class="d1"></span><span class="d2"></span><span class="d3"></span></div>
+        <div class="code-title">operators.py</div>
+      </div>
+      <pre><span class="var">a</span> <span class="op">=</span> <span class="num">10</span>
+<span class="var">b</span> <span class="op">=</span> <span class="num">3</span>
+
+<span class="fn">print</span>(<span class="str">"a + b  ="</span>, <span class="var">a</span> <span class="op">+</span> <span class="var">b</span>)
+<span class="fn">print</span>(<span class="str">"a - b  ="</span>, <span class="var">a</span> <span class="op">-</span> <span class="var">b</span>)
+<span class="fn">print</span>(<span class="str">"a * b  ="</span>, <span class="var">a</span> <span class="op">*</span> <span class="var">b</span>)
+<span class="fn">print</span>(<span class="str">"a / b  ="</span>, <span class="var">a</span> <span class="op">/</span> <span class="var">b</span>)
+<span class="fn">print</span>(<span class="str">"a // b ="</span>, <span class="var">a</span> <span class="op">//</span> <span class="var">b</span>)
+<span class="fn">print</span>(<span class="str">"a % b  ="</span>, <span class="var">a</span> <span class="op">%</span> <span class="var">b</span>)
+<span class="fn">print</span>(<span class="str">"2 ** 8 ="</span>, <span class="num">2</span> <span class="op">**</span> <span class="num">8</span>)</pre>
+    </div>
+    <div class="output-block">
+      <div class="out-label">Output</div>
+      a + b  = 13<br/>
+      a - b  = 7<br/>
+      a * b  = 30<br/>
+      a / b  = 3.3333333333333335<br/>
+      a // b = 3<br/>
+      a % b  = 1<br/>
+      2 ** 8 = 256
+    </div>
+
+    <h3>Sum of Two Numbers (Complete Example)</h3>
+    <div class="code-block">
+      <div class="code-header">
+        <div class="code-dots"><span class="d1"></span><span class="d2"></span><span class="d3"></span></div>
+        <div class="code-title">sum_two.py</div>
+      </div>
+      <pre><span class="var">a</span>   <span class="op">=</span> <span class="num">10</span>
+<span class="var">b</span>   <span class="op">=</span> <span class="num">10</span>
+<span class="var">sum</span> <span class="op">=</span> <span class="var">a</span> <span class="op">+</span> <span class="var">b</span>
+<span class="fn">print</span>(<span class="var">sum</span>)</pre>
+    </div>
+    <div class="output-block">
+      <div class="out-label">Output</div>
+      20
+    </div>
+  </section>
+
+  <hr/>
+
+  <!-- ══════════════════════════════════════════════════════
+       PART 6 — Relational Operators
+  ═══════════════════════════════════════════════════════ -->
+  <section id="part6">
+    <div class="section-label">Part 6</div>
+    <h2>Relational Operators</h2>
+    <div class="time-badge">⏱ ~5 minutes</div>
+
+    <p>Relational (comparison) operators compare two values and return either <code>True</code> or <code>False</code>.</p>
+
+    <table>
+      <tr><th>Operator</th><th>Meaning</th><th>Example</th><th>Result</th></tr>
+      <tr><td><code style="letter-spacing:0.08em">&#61;&#61;</code></td><td>Equal to</td><td><code>5 &#61;&#61; 5</code></td><td><code>True</code></td></tr>
+      <tr><td><code>!=</code></td><td>Not equal to</td><td><code>5 != 3</code></td><td><code>True</code></td></tr>
+      <tr><td><code>&gt;</code></td><td>Greater than</td><td><code>7 &gt; 3</code></td><td><code>True</code></td></tr>
+      <tr><td><code>&lt;</code></td><td>Less than</td><td><code>3 &lt; 7</code></td><td><code>True</code></td></tr>
+      <tr><td><code>&gt;=</code></td><td>Greater than or equal</td><td><code>5 &gt;= 5</code></td><td><code>True</code></td></tr>
+      <tr><td><code>&lt;=</code></td><td>Less than or equal</td><td><code>4 &lt;= 6</code></td><td><code>True</code></td></tr>
+    </table>
+
+    <div class="callout warn">
+      <div class="callout-icon">⚠️</div>
+      <p>Do not confuse <code>=</code> (assignment — stores a value in a variable) with <code>==</code> (comparison — checks whether two values are equal).</p>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header">
+        <div class="code-dots"><span class="d1"></span><span class="d2"></span><span class="d3"></span></div>
+        <div class="code-title">relational.py</div>
+      </div>
+      <pre><span class="var">x</span> <span class="op">=</span> <span class="num">10</span>
+<span class="var">y</span> <span class="op">=</span> <span class="num">20</span>
+
+<span class="fn">print</span>(<span class="var">x</span> <span class="op">==</span> <span class="var">y</span>)
+<span class="fn">print</span>(<span class="var">x</span> <span class="op">!=</span> <span class="var">y</span>)
+<span class="fn">print</span>(<span class="var">x</span> <span class="op">&lt;</span>  <span class="var">y</span>)
+<span class="fn">print</span>(<span class="var">x</span> <span class="op">&gt;</span>  <span class="var">y</span>)</pre>
+    </div>
+    <div class="output-block">
+      <div class="out-label">Output</div>
+      False<br/>True<br/>True<br/>False
+    </div>
+  </section>
+
+  <hr/>
+
+  <!-- ══════════════════════════════════════════════════════
+       PART 7 — Logical Operators
+  ═══════════════════════════════════════════════════════ -->
+  <section id="part7">
+    <div class="section-label">Part 7</div>
+    <h2>Logical Operators</h2>
+    <div class="time-badge">⏱ ~5 minutes</div>
+
+    <p>Logical operators combine multiple conditions together into one expression.</p>
+
+    <table>
+      <tr><th>Operator</th><th>Meaning</th><th>Returns True when...</th></tr>
+      <tr><td><code>and</code></td><td>Both conditions</td><td>Both sides are True</td></tr>
+      <tr><td><code>or</code></td><td>Either condition</td><td>At least one side is True</td></tr>
+      <tr><td><code>not</code></td><td>Opposite</td><td>The condition is False</td></tr>
+    </table>
+
+    <div class="code-block">
+      <div class="code-header">
+        <div class="code-dots"><span class="d1"></span><span class="d2"></span><span class="d3"></span></div>
+        <div class="code-title">logical.py</div>
+      </div>
+      <pre><span class="var">age</span>    <span class="op">=</span> <span class="num">20</span>
+<span class="var">has_id</span> <span class="op">=</span> <span class="kw">True</span>
+
+<span class="cm"># Both conditions must be true</span>
+<span class="fn">print</span>(<span class="var">age</span> <span class="op">&gt;=</span> <span class="num">18</span> <span class="kw">and</span> <span class="var">has_id</span>)
+
+<span class="cm"># At least one condition must be true</span>
+<span class="fn">print</span>(<span class="var">age</span> <span class="op">&lt;</span> <span class="num">18</span> <span class="kw">or</span> <span class="var">has_id</span>)
+
+<span class="cm"># Reverses the result</span>
+<span class="fn">print</span>(<span class="kw">not</span> <span class="var">has_id</span>)</pre>
+    </div>
+    <div class="output-block">
+      <div class="out-label">Output</div>
+      True<br/>True<br/>False
+    </div>
+  </section>
+
+  <hr/>
+
+  <!-- ══════════════════════════════════════════════════════
+       PART 8 — Conditional Statements
+  ═══════════════════════════════════════════════════════ -->
+  <section id="part8">
+    <div class="section-label">Part 8</div>
+    <h2>Conditional Statements</h2>
+    <div class="time-badge">⏱ ~10 minutes</div>
+
+    <p>Conditional statements let your program make decisions — run one block of code if a condition is true, and a different block if it is false.</p>
+
+    <div class="callout warn">
+      <div class="callout-icon">⚠️</div>
+      <p><strong>Indentation is mandatory in Python.</strong> The code inside an <code>if</code>, <code>elif</code>, or <code>else</code> block must be indented by exactly <strong>4 spaces</strong> (or one Tab). Python uses indentation to define code blocks — unlike many other languages that use curly braces <code>{ }</code>. Missing or wrong indentation will cause an error.</p>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header">
+        <div class="code-dots"><span class="d1"></span><span class="d2"></span><span class="d3"></span></div>
+        <div class="code-title">conditional.py</div>
+      </div>
+      <pre><span class="var">marks</span> <span class="op">=</span> <span class="fn">int</span>(<span class="fn">input</span>(<span class="str">"Enter your marks: "</span>))
+
+<span class="kw">if</span> <span class="var">marks</span> <span class="op">&gt;=</span> <span class="num">80</span>:
+    <span class="fn">print</span>(<span class="str">"Grade: A"</span>)
+<span class="kw">elif</span> <span class="var">marks</span> <span class="op">&gt;=</span> <span class="num">60</span>:
+    <span class="fn">print</span>(<span class="str">"Grade: B"</span>)
+<span class="kw">elif</span> <span class="var">marks</span> <span class="op">&gt;=</span> <span class="num">40</span>:
+    <span class="fn">print</span>(<span class="str">"Grade: C"</span>)
+<span class="kw">else</span>:
+    <span class="fn">print</span>(<span class="str">"Grade: F — Failed"</span>)</pre>
+    </div>
+    <div class="output-block">
+      <div class="out-label">Output (if marks = 75)</div>
+      Grade: B
+    </div>
+
+    <h3>Even or Odd (using Modulus)</h3>
+    <div class="code-block">
+      <div class="code-header">
+        <div class="code-dots"><span class="d1"></span><span class="d2"></span><span class="d3"></span></div>
+        <div class="code-title">even_odd.py</div>
+      </div>
+      <pre><span class="var">number</span> <span class="op">=</span> <span class="fn">int</span>(<span class="fn">input</span>(<span class="str">"Enter a number: "</span>))
+
+<span class="kw">if</span> <span class="var">number</span> <span class="op">%</span> <span class="num">2</span> <span class="op">==</span> <span class="num">0</span>:
+    <span class="fn">print</span>(<span class="var">number</span>, <span class="str">"is Even"</span>)
+<span class="kw">else</span>:
+    <span class="fn">print</span>(<span class="var">number</span>, <span class="str">"is Odd"</span>)</pre>
+    </div>
+    <div class="output-block">
+      <div class="out-label">Output (if number = 7)</div>
+      7 is Odd
+    </div>
+  </section>
+
+  <hr/>
+
+  <!-- ══════════════════════════════════════════════════════
+       PART 9 — Max / Min
+  ═══════════════════════════════════════════════════════ -->
+  <section id="part9">
+    <div class="section-label">Part 9</div>
+    <h2>Finding Maximum &amp; Minimum</h2>
+    <div class="time-badge">⏱ ~10 minutes</div>
+
+    <h3>Maximum of Two Numbers</h3>
+    <div class="code-block">
+      <div class="code-header">
+        <div class="code-dots"><span class="d1"></span><span class="d2"></span><span class="d3"></span></div>
+        <div class="code-title">max_two.py</div>
+      </div>
+      <pre><span class="var">a</span> <span class="op">=</span> <span class="fn">int</span>(<span class="fn">input</span>(<span class="str">"Enter first number: "</span>))
+<span class="var">b</span> <span class="op">=</span> <span class="fn">int</span>(<span class="fn">input</span>(<span class="str">"Enter second number: "</span>))
+
+<span class="kw">if</span> <span class="var">a</span> <span class="op">&gt;</span> <span class="var">b</span>:
+    <span class="fn">print</span>(<span class="str">"Maximum ="</span>, <span class="var">a</span>)
+<span class="kw">else</span>:
+    <span class="fn">print</span>(<span class="str">"Maximum ="</span>, <span class="var">b</span>)</pre>
+    </div>
+
+    <h3>Maximum of Three Numbers</h3>
+    <div class="code-block">
+      <div class="code-header">
+        <div class="code-dots"><span class="d1"></span><span class="d2"></span><span class="d3"></span></div>
+        <div class="code-title">max_three.py</div>
+      </div>
+      <pre><span class="var">a</span> <span class="op">=</span> <span class="fn">int</span>(<span class="fn">input</span>(<span class="str">"Enter first number: "</span>))
+<span class="var">b</span> <span class="op">=</span> <span class="fn">int</span>(<span class="fn">input</span>(<span class="str">"Enter second number: "</span>))
+<span class="var">c</span> <span class="op">=</span> <span class="fn">int</span>(<span class="fn">input</span>(<span class="str">"Enter third number: "</span>))
+
+<span class="kw">if</span> <span class="var">a</span> <span class="op">&gt;=</span> <span class="var">b</span> <span class="kw">and</span> <span class="var">a</span> <span class="op">&gt;=</span> <span class="var">c</span>:
+    <span class="fn">print</span>(<span class="str">"Maximum ="</span>, <span class="var">a</span>)
+<span class="kw">elif</span> <span class="var">b</span> <span class="op">&gt;=</span> <span class="var">a</span> <span class="kw">and</span> <span class="var">b</span> <span class="op">&gt;=</span> <span class="var">c</span>:
+    <span class="fn">print</span>(<span class="str">"Maximum ="</span>, <span class="var">b</span>)
+<span class="kw">else</span>:
+    <span class="fn">print</span>(<span class="str">"Maximum ="</span>, <span class="var">c</span>)</pre>
+    </div>
+
+    <h3>Minimum of Three Numbers</h3>
+    <div class="code-block">
+      <div class="code-header">
+        <div class="code-dots"><span class="d1"></span><span class="d2"></span><span class="d3"></span></div>
+        <div class="code-title">min_three.py</div>
+      </div>
+      <pre><span class="var">a</span> <span class="op">=</span> <span class="fn">int</span>(<span class="fn">input</span>(<span class="str">"Enter first number: "</span>))
+<span class="var">b</span> <span class="op">=</span> <span class="fn">int</span>(<span class="fn">input</span>(<span class="str">"Enter second number: "</span>))
+<span class="var">c</span> <span class="op">=</span> <span class="fn">int</span>(<span class="fn">input</span>(<span class="str">"Enter third number: "</span>))
+
+<span class="kw">if</span> <span class="var">a</span> <span class="op">&lt;=</span> <span class="var">b</span> <span class="kw">and</span> <span class="var">a</span> <span class="op">&lt;=</span> <span class="var">c</span>:
+    <span class="fn">print</span>(<span class="str">"Minimum ="</span>, <span class="var">a</span>)
+<span class="kw">elif</span> <span class="var">b</span> <span class="op">&lt;=</span> <span class="var">a</span> <span class="kw">and</span> <span class="var">b</span> <span class="op">&lt;=</span> <span class="var">c</span>:
+    <span class="fn">print</span>(<span class="str">"Minimum ="</span>, <span class="var">b</span>)
+<span class="kw">else</span>:
+    <span class="fn">print</span>(<span class="str">"Minimum ="</span>, <span class="var">c</span>)</pre>
+    </div>
+  </section>
+
+  <hr/>
+
+  <!-- ══════════════════════════════════════════════════════
+       PART 10 — Python Meets Hardware
+  ═══════════════════════════════════════════════════════ -->
+  <section id="part10">
+    <div class="fun-banner">
+      <div class="section-label bonus">Part 10</div>
+      <h2>🔌 Python Meets Hardware</h2>
+      <div class="time-badge">⏱ ~15 minutes</div>
+    </div>
+
+    <p>In your last class you saw how a computer is built — CPU, RAM, ROM, motherboard. Let's now connect those physical components to what you just learned in Python.</p>
+
+    <h3>A Variable IS a Location in RAM</h3>
+    <p>When you write <code>a = 10</code> in Python, the value <code>10</code> is stored in a real location in your computer's RAM. Python gives that location the name <code>a</code>. You can see the actual memory address of any variable using the built-in <code>id()</code> function.</p>
+
+    <div class="code-block">
+      <div class="code-header">
+        <div class="code-dots"><span class="d1"></span><span class="d2"></span><span class="d3"></span></div>
+        <div class="code-title">memory_address.py</div>
+      </div>
+      <pre><span class="var">a</span> <span class="op">=</span> <span class="num">10</span>
+<span class="var">b</span> <span class="op">=</span> <span class="num">3.14</span>
+<span class="var">c</span> <span class="op">=</span> <span class="str">"Hello"</span>
+
+<span class="fn">print</span>(<span class="str">"Value of a:"</span>, <span class="var">a</span>, <span class="str">"| Memory address:"</span>, <span class="fn">id</span>(<span class="var">a</span>))
+<span class="fn">print</span>(<span class="str">"Value of b:"</span>, <span class="var">b</span>, <span class="str">"| Memory address:"</span>, <span class="fn">id</span>(<span class="var">b</span>))
+<span class="fn">print</span>(<span class="str">"Value of c:"</span>, <span class="var">c</span>, <span class="str">"| Memory address:"</span>, <span class="fn">id</span>(<span class="var">c</span>))</pre>
+    </div>
+    <div class="output-block">
+      <div class="out-label">Output (addresses will differ on every machine)</div>
+      Value of a: 10 | Memory address: 140720038144936<br/>
+      Value of b: 3.14 | Memory address: 2071023498960<br/>
+      Value of c: Hello | Memory address: 2071024123568
+    </div>
+
+    <div class="callout info">
+      <div class="callout-icon">💡</div>
+      <p>Each variable has a unique address — a number that tells Python exactly where in the RAM chip the value is stored. When you reassign a variable (<code>a = 99</code>), the address changes too, because the value is now stored in a different location.</p>
+    </div>
+
+    <hr/>
+
+    <h3>How Much RAM Does Your Name Use?</h3>
+    <p>Every variable you create takes up actual space in your computer's RAM. Python's built-in <code>sys.getsizeof()</code> function tells you exactly how many <strong>bytes</strong> a variable occupies in memory. Let's make it personal — type your own name and see how much RAM it needs.</p>
+
+    <div class="code-block">
+      <div class="code-header">
+        <div class="code-dots"><span class="d1"></span><span class="d2"></span><span class="d3"></span></div>
+        <div class="code-title">name_in_ram.py</div>
+      </div>
+      <pre><span class="kw">import</span> sys
+
+<span class="var">name</span> <span class="op">=</span> <span class="fn">input</span>(<span class="str">"Enter your name: "</span>)
+<span class="fn">print</span>(<span class="str">"Your name occupies"</span>, <span class="fn">sys</span>.getsizeof(<span class="var">name</span>), <span class="str">"bytes in RAM"</span>)
+
+<span class="cm"># Try a longer name and see the difference</span>
+<span class="var">long_name</span> <span class="op">=</span> <span class="fn">input</span>(<span class="str">"Enter a longer name: "</span>)
+<span class="fn">print</span>(<span class="str">"Longer name occupies"</span>, <span class="fn">sys</span>.getsizeof(<span class="var">long_name</span>), <span class="str">"bytes in RAM"</span>)</pre>
+    </div>
+    <div class="output-block">
+      <div class="out-label">Output (example)</div>
+      Enter your name: Ali<br/>
+      Your name occupies 52 bytes in RAM<br/>
+      Enter a longer name: Alexander<br/>
+      Longer name occupies 58 bytes in RAM
+    </div>
+
+    <div class="callout tip">
+      <div class="callout-icon">🧠</div>
+      <p>Each extra character you add increases the size. This is exactly the RAM you saw as a physical stick in the last class — your variables are living inside it right now while the program runs. When the program ends, they disappear. That is why RAM is called <strong>volatile</strong> memory.</p>
+    </div>
+
+    <p>You can also compare different data types to see how each one uses a different amount of memory:</p>
+    <div class="code-block">
+      <div class="code-header">
+        <div class="code-dots"><span class="d1"></span><span class="d2"></span><span class="d3"></span></div>
+        <div class="code-title">type_sizes.py</div>
+      </div>
+      <pre><span class="kw">import</span> sys
+
+<span class="var">a</span> <span class="op">=</span> <span class="num">10</span>
+<span class="var">b</span> <span class="op">=</span> <span class="num">3.14</span>
+<span class="var">c</span> <span class="op">=</span> <span class="str">"Hello"</span>
+
+<span class="fn">print</span>(<span class="str">"int  :"</span>, <span class="fn">sys</span>.getsizeof(<span class="var">a</span>), <span class="str">"bytes"</span>)
+<span class="fn">print</span>(<span class="str">"float:"</span>, <span class="fn">sys</span>.getsizeof(<span class="var">b</span>), <span class="str">"bytes"</span>)
+<span class="fn">print</span>(<span class="str">"str  :"</span>, <span class="fn">sys</span>.getsizeof(<span class="var">c</span>), <span class="str">"bytes"</span>)</pre>
+    </div>
+    <div class="output-block">
+      <div class="out-label">Output</div>
+      int  : 28 bytes<br/>
+      float: 24 bytes<br/>
+      str  : 54 bytes
+    </div>
+
+    <hr/>
+
+    <h3>Seeing How Numbers Are Stored in Binary</h3>
+    <p>You learned in class that RAM stores everything as electrical signals — either ON or OFF. These two states represent <strong>1</strong> and <strong>0</strong>. Every number in your program is secretly stored as a sequence of 1s and 0s inside RAM. Python's built-in <code>bin()</code> function lets you see this binary form directly.</p>
+
+    <div class="callout info">
+      <div class="callout-icon">💡</div>
+      <p><strong>What is the <code>0b</code> prefix?</strong> When Python shows a binary number, it adds <code>0b</code> at the beginning as a label — it stands for <em>"0 binary"</em>. It is Python's way of saying "what follows is a binary number, not a regular decimal number." You should <strong>ignore the <code>0b</code></strong> and read only the digits after it. So <code>bin(10)</code> gives <code>0b1010</code>, which means the actual binary value is <code>1010</code>.</p>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header">
+        <div class="code-dots"><span class="d1"></span><span class="d2"></span><span class="d3"></span></div>
+        <div class="code-title">binary_demo.py</div>
+      </div>
+      <pre><span class="var">number</span> <span class="op">=</span> <span class="fn">int</span>(<span class="fn">input</span>(<span class="str">"Enter any number: "</span>))
+
+<span class="fn">print</span>(<span class="str">"Decimal  :"</span>, <span class="var">number</span>)
+<span class="fn">print</span>(<span class="str">"Binary   :"</span>, <span class="fn">bin</span>(<span class="var">number</span>))
+
+<span class="cm"># Some examples to understand the pattern</span>
+<span class="fn">print</span>(<span class="fn">bin</span>(<span class="num">1</span>))    <span class="cm"># 0b1</span>
+<span class="fn">print</span>(<span class="fn">bin</span>(<span class="num">2</span>))    <span class="cm"># 0b10</span>
+<span class="fn">print</span>(<span class="fn">bin</span>(<span class="num">4</span>))    <span class="cm"># 0b100</span>
+<span class="fn">print</span>(<span class="fn">bin</span>(<span class="num">8</span>))    <span class="cm"># 0b1000</span>
+<span class="fn">print</span>(<span class="fn">bin</span>(<span class="num">10</span>))   <span class="cm"># 0b1010</span></pre>
+    </div>
+    <div class="output-block">
+      <div class="out-label">Output (if number = 10)</div>
+      Decimal  : 10<br/>
+      Binary   : 0b1010<br/>
+      0b1<br/>
+      0b10<br/>
+      0b100<br/>
+      0b1000<br/>
+      0b1010
+    </div>
+
+    <div class="callout tip">
+      <div class="callout-icon">🧠</div>
+      <p>Notice how 1, 2, 4, 8 each add one extra binary digit — this is exactly how RAM stores numbers using bits (binary digits). Each physical memory cell in the RAM chip you saw holds exactly one bit — either 0 or 1.</p>
+    </div>
+
+    <hr/>
+
+    <h3>Estimating the Capacity of Your RAM</h3>
+    <p>You saw a RAM stick in the last class. It is measured in gigabytes (GB). Now that we know how many bytes a single integer variable takes, we can calculate roughly how many integer variables would fill your entire RAM.</p>
+
+    <div class="code-block">
+      <div class="code-header">
+        <div class="code-dots"><span class="d1"></span><span class="d2"></span><span class="d3"></span></div>
+        <div class="code-title">ram_capacity.py</div>
+      </div>
+      <pre><span class="kw">import</span> sys
+
+<span class="cm"># One integer variable takes 28 bytes in Python</span>
+<span class="var">int_size</span> <span class="op">=</span> <span class="fn">sys</span>.getsizeof(<span class="num">0</span>)
+<span class="fn">print</span>(<span class="str">"One integer takes:"</span>, <span class="var">int_size</span>, <span class="str">"bytes"</span>)
+
+<span class="cm"># How many bytes are in 8 GB of RAM?</span>
+<span class="var">ram_bytes</span> <span class="op">=</span> <span class="num">8</span> <span class="op">*</span> <span class="num">1024</span> <span class="op">*</span> <span class="num">1024</span> <span class="op">*</span> <span class="num">1024</span>
+<span class="fn">print</span>(<span class="str">"8 GB RAM in bytes:"</span>, <span class="var">ram_bytes</span>)
+
+<span class="cm"># How many integer variables could fit?</span>
+<span class="var">capacity</span> <span class="op">=</span> <span class="var">ram_bytes</span> <span class="op">//</span> <span class="var">int_size</span>
+<span class="fn">print</span>(<span class="str">"Approx. integers that fit in 8 GB:"</span>, <span class="var">capacity</span>)</pre>
+    </div>
+    <div class="output-block">
+      <div class="out-label">Output</div>
+      One integer takes: 28 bytes<br/>
+      8 GB RAM in bytes: 8589934592<br/>
+      Approx. integers that fit in 8 GB: 306783378
+    </div>
+
+    <div class="callout purple">
+      <div class="callout-icon">🤯</div>
+      <p>Over <strong>300 million integer variables</strong> could fit in 8 GB of RAM. This is why RAM size matters for large programs — the more data a program needs to hold at once, the more RAM it consumes. Notice we also used <strong>floor division (//)</strong> here — a partial variable doesn't count, so we round down to a whole number.</p>
+    </div>
+  </section>
+
+  <hr/>
+
+  <!-- ══════════════════════════════════════════════════════
+       PART 11 — Contest Problems
+  ═══════════════════════════════════════════════════════ -->
+  <section id="part11">
+    <div class="section-label">Part 11</div>
+    <h2>In-Class Contest Problems</h2>
+    <div class="time-badge">⏱ ~25 minutes</div>
+
+    <p>Solve the following problems on your own. Try each one before looking for help. They increase in difficulty from top to bottom.</p>
+
+    <div class="problem-card">
+      <div class="p-num">Problem 1 — Warm Up</div>
+      <h4>Arithmetic Summary</h4>
+      <p>Take two integers as input from the user. Print their sum, difference, product, and quotient each on a separate line with a label.</p>
+      <div class="sample-io">
+        <div class="io-box">
+          <div class="io-label">Input</div>
+          <div class="io-val">12<br/>4</div>
+        </div>
+        <div class="io-box">
+          <div class="io-label">Expected Output</div>
+          <div class="io-val">Sum = 16<br/>Difference = 8<br/>Product = 48<br/>Quotient = 3.0</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="problem-card">
+      <div class="p-num">Problem 2</div>
+      <h4>Even or Odd</h4>
+      <p>Take an integer as input. Print <code>Even</code> if it is divisible by 2, otherwise print <code>Odd</code>. Use the modulus operator.</p>
+      <div class="sample-io">
+        <div class="io-box"><div class="io-label">Input</div><div class="io-val">9</div></div>
+        <div class="io-box"><div class="io-label">Output</div><div class="io-val">Odd</div></div>
+      </div>
+    </div>
+
+    <div class="problem-card">
+      <div class="p-num">Problem 3</div>
+      <h4>Pass or Fail</h4>
+      <p>Take marks for three subjects as input (pass mark is 40 in each). If the student passes all three, print <code>Passed</code>. If they fail in any one subject, print <code>Failed</code>.</p>
+      <div class="sample-io">
+        <div class="io-box"><div class="io-label">Input</div><div class="io-val">55<br/>38<br/>70</div></div>
+        <div class="io-box"><div class="io-label">Output</div><div class="io-val">Failed</div></div>
+      </div>
+    </div>
+
+    <div class="problem-card">
+      <div class="p-num bonus">Problem 4 — Challenge 🏆</div>
+      <h4>Max of Three — The Hard Way</h4>
+      <p>Find the largest of three numbers entered by the user. You are allowed to use <strong>only two <code>if</code> statements</strong> — no <code>elif</code>, no <code>else</code>, no logical operators (<code>and</code>, <code>or</code>), and no built-in functions like <code>max()</code>. Think carefully about how to structure your logic.</p>
+      <div class="sample-io">
+        <div class="io-box"><div class="io-label">Input</div><div class="io-val">14<br/>27<br/>19</div></div>
+        <div class="io-box"><div class="io-label">Output</div><div class="io-val">Largest = 27</div></div>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<!-- FOOTER -->
+<footer>
+  Lab 1 &mdash; Introduction to CS &amp; Programming (Python) &nbsp;|&nbsp; Good luck, everyone!
+</footer>
+
+</body>
+</html>
