@@ -287,6 +287,136 @@ footer {
   nav { position: static; }
   .card { box-shadow: none; }
 }
+
+/* ── Module group (parent + submodules) ── */
+.module-group {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+  background: var(--white);
+  transition: box-shadow 0.15s, border-color 0.15s;
+}
+.module-group:hover {
+  box-shadow: 0 2px 16px rgba(0,0,0,0.07);
+  border-color: #93c5fd;
+}
+
+/* Parent row — not a link, just a label bar */
+.module-parent {
+  display: grid;
+  grid-template-columns: 56px 1fr;
+  align-items: center;
+  border-bottom: 1px solid var(--border);
+  background: var(--blue-lt);
+}
+.module-parent .card-badge {
+  background: var(--blue-lt);
+  border-right: 1px solid var(--border);
+}
+.module-parent .card-badge .badge-inner { color: var(--blue); }
+.module-parent .parent-body {
+  padding: 14px 22px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.module-parent .parent-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--navy);
+  letter-spacing: -0.01em;
+}
+.module-parent .parent-desc {
+  font-size: 12px;
+  color: var(--text2);
+  margin-top: 2px;
+  line-height: 1.4;
+}
+.submodule-count {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: #1d4ed8;
+  background: var(--blue-mid);
+  padding: 3px 9px;
+  border-radius: 20px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+/* Sub-module rows */
+.submodule-list {
+  display: flex;
+  flex-direction: column;
+}
+.submodule-row {
+  display: grid;
+  grid-template-columns: 56px 1fr 32px;
+  align-items: center;
+  border-bottom: 1px solid var(--border);
+  transition: background 0.15s;
+  text-decoration: none;
+  color: inherit;
+}
+.submodule-row:last-child { border-bottom: none; }
+.submodule-row:hover { background: var(--blue-lt); }
+.submodule-row:hover .card-arrow { color: var(--blue); transform: translateX(3px); }
+
+.sub-badge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  padding: 16px 0;
+  border-right: 1px solid var(--border);
+}
+.sub-badge .badge-inner {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  font-weight: 500;
+  color: #1d4ed8;
+  text-align: center;
+  line-height: 1.3;
+  opacity: 0.75;
+}
+.sub-body {
+  padding: 14px 22px;
+}
+.sub-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--navy);
+  margin-bottom: 2px;
+  letter-spacing: -0.01em;
+}
+.sub-desc {
+  font-size: 12.5px;
+  color: var(--text2);
+  line-height: 1.45;
+}
+
+/* Coming-soon sub-module */
+.submodule-row.soon {
+  opacity: 0.5;
+  pointer-events: none;
+  cursor: default;
+}
+.soon-tag {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text3);
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  padding: 2px 6px;
+  margin-left: 8px;
+  vertical-align: middle;
+}
 </style>
 </head>
 <body>
@@ -349,10 +479,12 @@ footer {
       <span class="section-pill pill-modules">Modules</span>
       <span class="section-name">Theory &amp; Concepts</span>
       <span class="section-line"></span>
-      <span class="section-count">1 module</span>
+      <span class="section-count">2 modules</span>
     </div>
 
     <div class="card-list">
+
+      <!-- M01 — single card, no submodules -->
       <a href="module1_hardware_architecture.html" class="card card-module">
         <div class="card-badge">
           <div class="badge-inner">M<br>01</div>
@@ -363,7 +495,64 @@ footer {
         </div>
         <div class="card-arrow">&#8594;</div>
       </a>
-    </div>
+
+      <!-- M02 — parent with submodules -->
+      <div class="module-group">
+
+        <!-- Parent label row -->
+        <div class="module-parent">
+          <div class="card-badge">
+            <div class="badge-inner">M<br>02</div>
+          </div>
+          <div class="parent-body">
+            <div>
+              <div class="parent-title">Boolean Algebra, Logic Gates and Adders</div>
+              <div class="parent-desc">From two-state signals to the boolean algebra to the Adders that power every computer decision</div>
+            </div>
+            <span class="submodule-count">3 sub-modules</span>
+          </div>
+        </div>
+
+        <!-- Submodule rows -->
+        <div class="submodule-list">
+
+          <a href="Module-2/module2_1_boolean_logic_switches.html" class="submodule-row">
+            <div class="sub-badge">
+              <div class="badge-inner">2.1</div>
+            </div>
+            <div class="sub-body">
+              <div class="sub-title">Boolean Logic with Switches &am</div>
+              <div class="sub-desc">Morse &amp; Braille, Boole's algebra, classes, AND / OR / NOT, truth tables, switch circuits</div>
+            </div>
+            <div class="card-arrow">&#8594;</div>
+          </a>
+
+          <div class="submodule-row soon">
+            <div class="sub-badge">
+              <div class="badge-inner">2.2</div>
+            </div>
+            <div class="sub-body">
+              <div class="sub-title">Logic Gates &amp; Digital Circuits <span class="soon-tag">Coming soon</span></div>
+              <div class="sub-desc">Transistors, AND / OR / NOT gates, combining gates into functional circuits</div>
+            </div>
+            <div class="card-arrow">&#8594;</div>
+          </div>
+
+          <div class="submodule-row soon">
+            <div class="sub-badge">
+              <div class="badge-inner">2.3</div>
+            </div>
+            <div class="sub-body">
+              <div class="sub-title">Binary Adders <span class="soon-tag">Coming soon</span></div>
+              <div class="sub-desc">Adders for performing binary addition in digital circuits</div>
+            </div>
+            <div class="card-arrow">&#8594;</div>
+          </div>
+
+        </div><!-- /.submodule-list -->
+      </div><!-- /.module-group -->
+
+    </div><!-- /.card-list -->
   </div>
 
   <!-- Python -->
