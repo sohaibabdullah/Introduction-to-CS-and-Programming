@@ -210,6 +210,7 @@
   .cc-desc strong { color:var(--text); }
 
   /* ── Diagram placeholder ── */
+  .diagram-ph { overflow: hidden; }
   .diagram-ph { background:#fff; border:2px dashed var(--border); border-radius:8px; padding:44px 28px; text-align:center; margin:14px 0; transition:border-color .2s; }
   .diagram-ph:hover { border-color:rgba(10,124,92,.4); }
   .diagram-ph .ph-icon { font-size:34px; display:block; margin-bottom:10px; opacity:.3; }
@@ -874,14 +875,13 @@
     <div class="diagram-ph">
       <span class="ph-icon">💡</span>
       <div class="ph-title">Fig. 1 — Series: One Switch Open</div>
-      <div class="ph-desc">Insert diagram: two switches in series with battery and bulb. Left closed, right open → circuit broken → bulb unlit.</div>
-      <span class="ph-ref">Book p. 50</span>
+      <div class="ph-desc"><img src="diagram-series-open.png" alt="Series Circuit: One Switch Open"></br>Two switches in series with battery and bulb. Left closed, right open → circuit broken → bulb unlit.</div>
+      
     </div>
     <div class="diagram-ph">
       <span class="ph-icon">💡</span>
       <div class="ph-title">Fig. 2 — Series: Both Closed</div>
-      <div class="ph-desc">Insert diagram: two switches in series, both closed → complete circuit → current flows → bulb lights up.</div>
-      <span class="ph-ref">Book p. 50</span>
+      <div class="ph-desc"><img src="diagram-series-closed.png" alt="Series Circuit: Both Switches Closed"></br>Two switches in series, both closed → complete circuit → current flows → bulb lights up.</div>
     </div>
   </div>
 
@@ -930,14 +930,13 @@
     <div class="diagram-ph">
       <span class="ph-icon">💡</span>
       <div class="ph-title">Fig. 3 — Parallel: Top Switch Closed</div>
-      <div class="ph-desc">Insert diagram: two switches in parallel. Top switch closed → current takes top path → bulb lights. Bottom switch still open.</div>
-      <span class="ph-ref">Book p. 52</span>
+      <div class="ph-desc"><img src="diagram-parallel-top-closed.png" alt="Parallel Circuit: Top Switch Closed">Two switches in parallel. Top switch closed → current takes top path → bulb lights. Bottom switch still open.</div>
     </div>
     <div class="diagram-ph">
       <span class="ph-icon">💡</span>
       <div class="ph-title">Fig. 4 — Parallel: Both Switches Closed</div>
-      <div class="ph-desc">Insert diagram: two switches in parallel, both closed → two paths available → bulb still lit. OR: 1 + 1 = 1.</div>
-      <span class="ph-ref">Book p. 53</span>
+      <div class="ph-desc"><img src="diagram-parallel-both-closed.png" alt="Parallel Circuit: Both Switches Closed"></br>Two switches in parallel, both closed → two paths available → bulb still lit. OR: 1 + 1 = 1.</div>
+      
     </div>
   </div>
 
@@ -1000,42 +999,40 @@
   <div class="diagram-ph" style="padding:56px 32px;">
     <span class="ph-icon">🔌</span>
     <div class="ph-title">Fig. 5 — Complete 8-Switch Circuit</div>
-    <div class="ph-desc">
-      Insert wiring diagram: three branches running in parallel, all connecting to a single lightbulb and battery.<br><br>
+    <div class="ph-desc"><img src="diagram-complete-circuit.png" alt="Complete 8-Switch Circuit">
+      <br/>Three branches running in parallel, all connecting to a single lightbulb and battery.<br><br>
       <strong>Top branch (Condition 1):</strong> &nbsp; M — N — [W parallel T] — in series<br>
       <strong>Middle branch (Condition 2):</strong> &nbsp; F — N — <span style="text-decoration:overline">W</span> — in series<br>
       <strong>Bottom branch (Condition 3):</strong> &nbsp; B — single switch<br><br>
       All three branches run in parallel to the lightbulb.
     </div>
-    <span class="ph-ref">Book p. 54</span>
   </div>
 
   <p class="prose" style="margin-top:20px;">
     The shopkeeper closes the switches corresponding to each cat's actual properties, then checks whether the bulb lights. The circuit gives the same answer as the algebraic test — because it <em>is</em> the same test, performed in hardware rather than on paper.
   </p>
 
-  <div class="diagram-grid">
+  <div class="diagram-grid" style="align-items: start;">
+    
     <div class="diagram-ph">
       <span class="ph-icon">❌</span>
       <div class="ph-title">Fig. 6 — Cat 1: Unneutered Tan Male</div>
-      <div class="ph-desc">M, T, and <span style="text-decoration:overline">W</span> switches closed. The N switch in the top branch is open → series chain broken → no current flows to bulb. Unlit.</div>
-      <span class="ph-ref">Book p. 55</span>
+      <div class="ph-desc"><img src="diagram-cat1-unneutered-tan-male.png" alt="Cat 1: Unneutered Tan Male" style="width:100%; height:auto; display:block; margin-bottom:8px;"></br>M, T, and <span style="text-decoration:overline">W</span> switches closed. The N switch in the top branch is open → series chain broken → no current flows to bulb. Unlit.</div>
     </div>
     <div class="diagram-ph">
       <span class="ph-icon">❌</span>
       <div class="ph-title">Fig. 7 — Cat 2: Neutered White Female</div>
-      <div class="ph-desc">F and N closed, but W = 1 means the <span style="text-decoration:overline">W</span> switch is open → middle branch broken → no current. Unlit.</div>
-      <span class="ph-ref">Book p. 55</span>
+      <div class="ph-desc"><img src="diagram-cat2-neutered-white-female.png" alt="Cat 2: Neutered White Female" style="width:100%; height:auto; display:block; margin-bottom:8px;"></br>F and N closed, but W = 1 means the <span style="text-decoration:overline">W</span> switch is open → middle branch broken → no current. Unlit.</div>
     </div>
   </div>
 
   <div class="diagram-ph" style="padding:52px 32px; margin-top:0;">
     <span class="ph-icon">✅</span>
     <div class="ph-title">Fig. 8 — Cat 3: Neutered Grey Female — Circuit Completed</div>
-    <div class="ph-desc">
+    <div class="ph-desc"> <img src="diagram-cat3-neutered-grey-female.png" alt="Cat 3: Neutered Grey></br>
       Grey is not white → W = 0 → <span style="text-decoration:overline">W</span> switch is closed. F = 1 and N = 1 also closed. Middle branch (F → N → <span style="text-decoration:overline">W</span>) is a complete series path. Current flows through the parallel structure → bulb lights up → cat accepted.
     </div>
-    <span class="ph-ref">Book p. 56</span>
+    
   </div>
 
   <div class="insight" style="margin-top:20px;">
