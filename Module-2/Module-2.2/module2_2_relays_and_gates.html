@@ -223,7 +223,8 @@
         <strong>Section 5</strong> — NAND and NOR: the two universal gates<br>
         <strong>Section 6</strong> — The buffer, and the six-gate family in full<br>
         <strong>Section 7</strong> — De Morgan's laws: a deeper symmetry<br>
-        <strong>Section 8</strong> — Quick reference summary
+        <strong>Section 8</strong> — Expression simplification and implementation with logic gates<br>
+        <strong>Section 9</strong> — Quick reference summary
       </div>
     </div>
   </div>
@@ -718,13 +719,63 @@
   </div>
 </section>
 
-
 <!-- ══════════════════════════════════════════════════════════════
-     SECTION 8 — QUICK REFERENCE SUMMARY
+     SECTION 8 — EXPRESSION SIMPLIFICATION AND IMPLEMENTATION WITH LOGIC GATES
 ══════════════════════════════════════════════════════════════════ -->
 <section class="section">
   <div class="section-label">Section 08</div>
-  <h2 class="section-title"><span class="num">8.</span>Quick Reference Summary</h2>
+  <h2 class="section-title"><span class="num">8.</span>Expression Simplification and Implementation with Logic Gates</h2>
+
+  <p class="prose">Here's the expression that indicates the characteristics you want in a cat:</p>
+
+  <div class="eq-block">
+    <div style="text-align:center;">(M &times; N &times; (W + T)) + (F &times; N &times; (1 &ndash; W)) + B</div>
+  </div>
+
+  <p class="prose">Let's try to simplify it. Using the commutative law, you can reorder the variables that are combined with the AND (&times;) signs and rewrite the expression this way:</p>
+
+  <div class="eq-block">
+    <div style="text-align:center;">(N &times; M &times; (W + T)) + (N &times; F &times; (1 &ndash; W)) + B</div>
+  </div>
+
+  <p class="prose">In an attempt to clarify what I'm going to do here, we'll define two new symbols named X and Y:</p>
+
+  <div class="eq-block">
+    <div style="text-align:center;">X = M &times; (W + T)</div>
+    <div style="text-align:center;">Y = F &times; (1 &ndash; W)</div>
+  </div>
+
+  <p class="prose" style="text-indent:0;">Now the expression for the cat that you want can be written like this:</p>
+
+  <div class="eq-block">
+    <div style="text-align:center;">(N &times; X) + (N &times; Y) + B</div>
+  </div>
+
+  <p class="prose" style="text-indent:0;">After we're finished, we can put the X and Y expressions back in.</p>
+  <p class="prose" style="text-indent:0;">Notice that the N variable appears twice in the expression. Using the distributive law, the expression can be rewritten like this, <mark style="background:#b8d0e8;padding:0 3px;border-radius:2px;">with</mark> only one N:</p>
+
+  <div class="eq-block">
+    <div style="text-align:center;">(N &times; (X + Y)) + B</div>
+  </div>
+
+  <p class="prose" style="text-indent:0;">Now let's put the X and Y expressions back in:</p>
+
+  <div class="eq-block">
+    <div style="text-align:center;">(N &times; ((M &times; (W + T)) + (F &times; (1 &ndash; W)))) + B</div>
+  </div>
+  <p class="prose" style="text-indent:0;">Now let's implement this expression using logic gates.For every + sign in this expression, there must be an OR gate in the cir
+cuit. For every × sign, there must be an AND gate</p>
+<div class="img-box">
+    <img src="expression_in_logic_gates.png" alt="Implementation of the simplified expression using logic gates" style="width:100%;height:auto;display:block;">
+    <div class="img-caption">Fig. 17 — Implementation of the simplified expression using logic gates. </div>
+  </div>
+</section>
+<!-- ══════════════════════════════════════════════════════════════
+     SECTION 9 — QUICK REFERENCE SUMMARY
+══════════════════════════════════════════════════════════════════ -->
+<section class="section">
+  <div class="section-label">Section 09</div>
+  <h2 class="section-title"><span class="num">9.</span>Quick Reference Summary</h2>
 
   <table class="styled-table" style="margin-bottom:24px;">
     <thead>
